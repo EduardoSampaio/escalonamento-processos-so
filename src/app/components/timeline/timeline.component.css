@@ -1,0 +1,47 @@
+table,
+th,
+td
+{
+  border: 1px solid black;
+  border-collapse: collapse;
+  font-size: 15px;
+}
+.content {
+  width: 100%;
+  display: flex;
+  flex-flow: row nowrap;
+  margin-top: 30px;
+}
+
+.content-processo{
+  width: 25px;
+  margin-top: 18px;
+  margin-left: 30px;
+}
+
+.content-processo div{
+  padding-top: 10px;
+}
+
+.content-table{
+  width: 95%;
+  margin-left: 30px;
+}
+
+.cell-processo {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+tr td{
+  padding-left: 6px;
+  padding-right: 6px;
+}
+
+.preenchido {
+  background-color: black;
+}
+
+.vazio{
+  background-color: transparent;
+}

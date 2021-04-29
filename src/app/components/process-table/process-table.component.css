@@ -12,6 +12,10 @@ table {
   min-height: 200px;
 }
 
+tr.mat-header-row {
+  height: 30px;
+}
+
 tr.mat-row{
   height: 20px;
 }

@@ -6,7 +6,7 @@
   display: grid;
   grid-template-areas: "titulo titulo""tabela pronto""escalonamento escalonamento""timeline timeline";
   grid-template-columns:  1fr 1fr;
-  grid-template-rows: 100px 280px 50px 400px;
+  grid-template-rows: 100px 250px 50px 400px;
 }
 
 .content-title {
