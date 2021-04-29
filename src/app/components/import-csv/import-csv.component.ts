@@ -13,6 +13,7 @@ export class ImportCsvComponent implements OnInit {
   ) { }
 
   @Output() selectedFile = new EventEmitter<File>();
+  @Output() clearFile = new EventEmitter<File>();
   filename = '';
   file: File;
 
@@ -85,6 +86,7 @@ export class ImportCsvComponent implements OnInit {
   onClearFile(): void {
     this.filename = '';
     this.file = null;
+    this.clearFile.emit(null);
   }
 
 }

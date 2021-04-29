@@ -31,3 +31,10 @@
   display: flex;
   justify-content: center;
 }
+
+.btn-iniciar {
+  width: 200px;
+  height: 50px;
+  font-weight: 500;
+  font-size: 15px
+}
