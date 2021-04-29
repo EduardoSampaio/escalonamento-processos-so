@@ -1,0 +1,29 @@
+<table mat-table [dataSource]="dataSource"  class="mat-elevation-z1" id="table-mat">
+  <ng-container matColumnDef="processo">
+    <th mat-header-cell *matHeaderCellDef>Processo </th>
+    <td mat-cell *matCellDef="let element">{{element.processo}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="chegada">
+    <th mat-header-cell *matHeaderCellDef> Tempo Chegada </th>
+    <td mat-cell *matCellDef="let element"> {{element.chegada}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="execucao">
+    <th mat-header-cell *matHeaderCellDef> Tempo Execução </th>
+    <td mat-cell *matCellDef="let element"> {{element.execucao}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="es1">
+    <th mat-header-cell *matHeaderCellDef> E/S </th>
+    <td mat-cell *matCellDef="let element"> {{element.es1}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="es2">
+    <th mat-header-cell *matHeaderCellDef> E/S </th>
+    <td mat-cell *matCellDef="let element"> {{element.es2}} </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>

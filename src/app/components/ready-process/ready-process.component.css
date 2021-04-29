@@ -1,0 +1,21 @@
+.content-pronto{
+  display: flex;
+
+}
+
+.content-pronto div{
+  width: 40px;
+  height: 40px;
+  border: 2px solid black;
+  align-items: center;
+  justify-content: center;
+  margin-left: 5px;
+  color: white;
+  background-color: var(--cor-alerta);
+  display: flex;
+}
+
+.content-pronto div:first-child{
+  color: white;
+  background-color: var(--cor-sucesso);
+}

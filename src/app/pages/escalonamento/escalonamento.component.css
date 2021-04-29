@@ -1,0 +1,49 @@
+.content {
+  width: 1280px;
+  height: 720px;
+  margin: auto;
+  background-color: var(--cor-light);
+  display: grid;
+  grid-template-areas: "titulo titulo""tabela pronto""escalonamento escalonamento""timeline timeline";
+  grid-template-columns:  1fr 1fr;
+  grid-template-rows: 100px 280px 50px 400px;
+}
+
+.content-title {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  grid-area: titulo;
+}
+
+.tabela {
+  grid-area: tabela;
+}
+
+.pronto {
+  grid-area: pronto;
+}
+
+.escalonamento {
+  grid-area: escalonamento;
+  text-align: center;
+}
+
+.timeline {
+  grid-area: timeline;
+}
+
+.btn-voltar {
+  background-color: var(--cor-light);
+}
+
+.btn-voltar:hover {
+  background-color: var(--gray-tones-bg-color-2);
+}
+
+.titulo {
+  width: 100%;
+  text-align: center;
+}
+
+.content-btn-voltar {}

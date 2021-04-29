@@ -1,0 +1,33 @@
+.content {
+  width: 600px;
+  margin: auto;
+  background-color: var(--cor-light);
+  display: grid;
+  grid-template-areas: "titulo""content-combo""content-import""content-btn";
+  grid-template-columns: 1fr;
+  grid-template-rows: 100px 120px 200px 120px;
+}
+
+.titulo {
+  grid-area: "titulo";
+  text-align: center;
+  align-self: center;
+}
+
+.content-combo {
+  grid-area: "content-combo";
+  display: flex;
+  justify-content: center;
+}
+
+.content-import {
+  grid-area: "content-import";
+  display: flex;
+  justify-content: center;
+}
+
+.content-btn {
+  grid-area: "content-btn";
+  display: flex;
+  justify-content: center;
+}

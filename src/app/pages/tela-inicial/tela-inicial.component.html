@@ -1,0 +1,25 @@
+<div class="content">
+  <div class="titulo">
+    <h1>Escalonamento de Processos</h1>
+  </div>
+  <div class="content-combo">
+    <mat-form-field appearance="outline" style="width: 400px">
+      <mat-label>Selecione Política Escalonamento</mat-label>
+      <mat-select>
+        <mat-option value="1">FCFS</mat-option>
+        <mat-option value="2">SPN</mat-option>
+        <mat-option value="3">SRT</mat-option>
+        <mat-option value="3">RR</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div class="content-import">
+    <app-import-csv></app-import-csv>
+  </div>
+  <div class="content-btn">
+
+    <button mat-raised-button color="primary" (click)="start()" style="width: 200px; height: 50px; font-weight: 500; font-size: 15px">
+       Iniciar
+    </button>
+  </div>
+</div>

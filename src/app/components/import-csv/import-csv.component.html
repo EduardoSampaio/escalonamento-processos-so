@@ -1,0 +1,22 @@
+<div class="card-box-content" appDragDropUploadFile (fileDrop)="onFileDrop($event)">
+  <input type="file" style="display: none" id="curva-carga" (change)="onFileChange($event)"
+    accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
+  <div class="card-box-file">
+    <div class="card-box-filename" *ngIf="filename !== ''">
+      <p>{{ filename }}</p>
+      <img src="assets/img/cancel.svg" alt="Cancelar upload" (click)="onClearFile()" />
+    </div>
+  </div>
+  <div class="card-box-upload" (click)="openFileBrowser()">
+    <div class="card-box-content-img">
+      <img *ngIf="filename === ''" src="assets/img/upload.svg" alt="upload" />
+      <img *ngIf="filename !== ''" src="assets/img/uploaded.svg" alt="upload" />
+    </div>
+    <div class="card-box-content-text">
+      <p>
+        Arraste o arquivo nesta área <br />
+        ou clique para localizá-lo
+      </p>
+    </div>
+  </div>
+</div>

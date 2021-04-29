@@ -1,0 +1,17 @@
+table {
+  width: 75%;
+  height: 100px;
+}
+
+.mat-table {
+  margin-left: 20px;
+  overflow: auto;
+}
+
+#table-mat .mat-cell{
+  min-height: 200px;
+}
+
+tr.mat-row{
+  height: 20px;
+}

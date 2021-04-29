@@ -1,0 +1,25 @@
+<div class="content">
+  <div class="content-title">
+    <div class="content-btn-voltar">
+      <button mat-flat-button (click)="back()" class="btn-voltar">
+        <mat-icon>keyboard_backspace</mat-icon>
+      </button>
+    </div>
+    <div class="titulo">
+      <h1>Escalonamento de Processos</h1>
+    </div>
+  </div>
+  <div class="tabela">
+    <app-process-table></app-process-table>
+  </div>
+  <div class="pronto">
+    <app-ready-process></app-ready-process>
+  </div>
+  <div class="escalonamento">
+    <h2>Politica de Escalonamento FCFS</h2>
+    <p>Tempo Atual</p>
+  </div>
+  <!-- <div class="timeline">
+    <app-timeline></app-timeline>
+  </div> -->
+</div>
