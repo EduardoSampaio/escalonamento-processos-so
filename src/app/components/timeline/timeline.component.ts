@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-timeline',
@@ -7,9 +7,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TimelineComponent implements OnInit {
 
-  constructor() { }
+  colunas = new Array(51);
+  @Input() nomes;
+  constructor() {
+    console.log(this.colunas);
+  }
 
   ngOnInit(): void {
+    console.log(this.nomes);
   }
 
 }

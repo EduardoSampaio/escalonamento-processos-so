@@ -9,8 +9,8 @@
       <h1>Escalonamento de Processos</h1>
     </div>
   </div>
-  <div class="tabela">
-    <app-process-table></app-process-table>
+  <div class="tabela" *ngIf="state$ | async">
+    <app-process-table [data]="processos"></app-process-table>
   </div>
   <div class="pronto">
     <app-ready-process></app-ready-process>
@@ -19,7 +19,7 @@
     <h2>Politica de Escalonamento FCFS</h2>
     <p>Tempo Atual (24)</p>
   </div>
- <div class="timeline">
-    <app-timeline></app-timeline>
+ <div class="timeline" *ngIf="state$ | async">
+    <app-timeline [nomes]="nomes"></app-timeline>
   </div>
 </div>

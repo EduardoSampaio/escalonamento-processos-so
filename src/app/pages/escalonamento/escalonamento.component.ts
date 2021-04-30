@@ -1,3 +1,6 @@
+import { Escalonamento } from './../../models/escalonamento.model';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 
@@ -9,14 +12,21 @@ import { Component, OnInit } from '@angular/core';
 export class EscalonamentoComponent implements OnInit {
 
   tempoMaximo = 0;
+  state$: Observable<object>;
+  processos: Escalonamento[];
+  nomes = [];
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute) {
     if (this.router.getCurrentNavigation().extras.state === undefined) {
       this.router.navigate(['']);
     }
-    const { tempo } = this.router.getCurrentNavigation().extras.state;
-    this.tempoMaximo = tempo;
-    console.log(tempo);
+    this.state$ = this.activatedRoute.paramMap
+      .pipe(map(() => window.history.state))
+
+    this.state$.subscribe(data => {
+      this.processos = data['processos'];
+      this.nomes = this.processos.map(p => p.processo);
+    });
   }
 
   ngOnInit(): void {
@@ -25,4 +35,6 @@ export class EscalonamentoComponent implements OnInit {
   back(): void {
     this.router.navigate(['']);
   }
+
+
 }

@@ -10,21 +10,15 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class ProcessTableComponent implements OnInit {
 
+  @Input() data: Escalonamento[];
   displayedColumns: string[] = ['processo', 'chegada', 'execucao', 'es1', 'tempoEs1', 'es2', 'tempoEs2'];
   dataSource = [];
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute) {
-    if (this.router.getCurrentNavigation().extras.state === undefined) {
-      this.router.navigate(['']);
-    }
-    const { processos } = this.router.getCurrentNavigation().extras.state;
-
-    this.dataSource = processos;
-    console.log(this.dataSource);
-  }
-
+  constructor() {}
 
   ngOnInit(): void {
+    this.dataSource = this.data;
+    console.log(this.dataSource);
   }
 
 }
