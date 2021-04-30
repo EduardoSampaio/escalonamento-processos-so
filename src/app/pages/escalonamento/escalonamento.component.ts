@@ -8,8 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EscalonamentoComponent implements OnInit {
 
+  tempoMaximo = 0;
+
   constructor(private router: Router, private activatedRoute: ActivatedRoute) {
-    console.log(this.router.getCurrentNavigation().extras.state);
+    if (this.router.getCurrentNavigation().extras.state === undefined) {
+      this.router.navigate(['']);
+    }
+    const { tempo } = this.router.getCurrentNavigation().extras.state;
+    this.tempoMaximo = tempo;
+    console.log(tempo);
   }
 
   ngOnInit(): void {

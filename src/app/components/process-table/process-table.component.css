@@ -19,3 +19,13 @@ tr.mat-header-row {
 tr.mat-row{
   height: 20px;
 }
+
+.mat-column-processo,
+.mat-column-chegada,
+.mat-column-execucao,
+.mat-column-es1,
+.mat-column-tempoEs1,
+.mat-column-es2,
+.mat-column-tempoEs2 {
+  text-align: center;
+}

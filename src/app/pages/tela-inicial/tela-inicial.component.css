@@ -3,33 +3,39 @@
   margin: auto;
   background-color: var(--cor-light);
   display: grid;
-  grid-template-areas: "titulo""content-combo""content-import""content-btn";
+  grid-template-areas: "titulo""content-box""content-btn";
   grid-template-columns: 1fr;
-  grid-template-rows: 100px 120px 200px 120px;
+  grid-template-rows: 100px 300px 100px;
 }
 
 .titulo {
-  grid-area: "titulo";
+  grid-area: titulo;
   text-align: center;
   align-self: center;
 }
 
-.content-combo {
-  grid-area: "content-combo";
+.content-box {
+  grid-area: content-box;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.content-btn {
+  grid-area: content-btn;
   display: flex;
   justify-content: center;
+}
+
+.content-combo {
+  display: flex;
 }
 
 .content-import {
   grid-area: "content-import";
   display: flex;
-  justify-content: center;
-}
-
-.content-btn {
-  grid-area: "content-btn";
-  display: flex;
-  justify-content: center;
+  width: 400px;
 }
 
 .btn-iniciar {

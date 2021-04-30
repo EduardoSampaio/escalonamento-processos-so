@@ -2,17 +2,19 @@
   <div class="titulo">
     <h1>Escalonamento de Processos</h1>
   </div>
-  <div class="content-combo">
-    <mat-form-field appearance="outline" style="width: 400px">
-      <mat-label>Selecione Política Escalonamento</mat-label>
-      <mat-select (selectionChange)="selectionChange()" [(value)]="selectedValue">
-        <mat-option value="1">SPN</mat-option>
-        <mat-option value="2">SRT</mat-option>
-      </mat-select>
-    </mat-form-field>
+  <div class="content-box">
+    <div class="content-combo">
+      <mat-form-field appearance="outline" style="width: 390px;">
+        <mat-label>Selecione Política Escalonamento</mat-label>
+        <mat-select (selectionChange)="selectionChange()" [(value)]="selectedValue">
+          <mat-option value="1">SPN</mat-option>
+          <mat-option value="2">SRT</mat-option>
+        </mat-select>
+      </mat-form-field>
   </div>
   <div class="content-import">
     <app-import-csv (selectedFile)="importarCsv($event)" (clearFile)="clearFile($event)"></app-import-csv>
+  </div>
   </div>
   <div class="content-btn">
 

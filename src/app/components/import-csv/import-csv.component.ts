@@ -18,9 +18,7 @@ export class ImportCsvComponent implements OnInit {
   file: File;
 
   private readonly EXTENSIONS = [
-    '.csv',
     'application/vnd.ms-excel',
-    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
   ];
 
   ngOnInit(): void { }
@@ -61,7 +59,7 @@ export class ImportCsvComponent implements OnInit {
 
   showMessage(msg: string): void {
     this.snackbar.open(
-      `O Arquivo importado tem um formato ${msg} é inválido MENSAGEM TEMPORÁRIA`,
+      `O Arquivo importado tem um formato ${msg} é inválido`,
       'X',
       {
         duration: 3000,
