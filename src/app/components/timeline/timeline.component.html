@@ -1,14 +1,84 @@
-<div>
-  <table class="content-table">
-  <tr>
-    <th></th>
-    <th *ngFor="let item of colunas; let i = index">{{i}}</th>
-  </tr>
-  <tr>
+<div class="content">
+  <div class="content-processo">
+    <div>P1</div>
+    <div>P2</div>
+    <div>P3</div>
+    <div>P4</div>
+    <div>P5</div>
+    <div>P6</div>
+    <div>P7</div>
+    <div>P9</div>
+    <div>P10</div>
+  </div>
+  <div class="content-table">
+    <table>
+      <tr>
+        <th *ngFor="let item of colunas; let i = index">{{ i }}</th>
+      </tr>
+      <tr>
+        <td *ngFor="let item of colunas; let i = index"></td>
+      </tr>
+      <tr>
+        <td *ngFor="let item of colunas; let i = index"></td>
+      </tr>
+      <tr>
+        <td *ngFor="let item of colunas; let i = index"></td>
+      </tr>
+      <tr>
+        <td *ngFor="let item of colunas; let i = index"></td>
+      </tr>
+      <tr>
+        <td *ngFor="let item of colunas; let i = index"></td>
+      </tr>
+      <tr>
+        <td *ngFor="let item of colunas; let i = index"></td>
+      </tr>
+      <tr>
+        <td *ngFor="let item of colunas; let i = index"></td>
+      </tr>
+      <tr>
+        <td *ngFor="let item of colunas; let i = index"></td>
+      </tr>
+      <tr>
+        <td *ngFor="let item of colunas; let i = index"></td>
+      </tr>
+    </table>
+  </div>
 
-  </tr>
-  </table>
+  <div class="btn-actions">
+    <button
+      mat-stroked-button
+      color="warn"
+      matTooltip="Reset Escalonamento"
+      (click)="reset()"
+    >
+      <mat-icon>refresh</mat-icon>
+    </button>
+    <button
+      mat-stroked-button
+      color="primary"
+      matTooltip="Volta na timeline"
+      style="margin-left: 10px"
+      (click)="previous()"
+    >
+      <mat-icon>skip_previous</mat-icon>
+    </button>
+    <button
+      mat-stroked-button
+      color="primary"
+      matTooltip="Inicia o Escalonamento"
+      style="margin-left: 10px; margin-right: 10px"
+      (click)="start()"
+    >
+      <mat-icon>play_circle_outline</mat-icon>
+    </button>
+    <button
+      mat-stroked-button
+      color="primary"
+      matTooltip="Avança na timeline"
+      (click)="next()"
+    >
+      <mat-icon>skip_next</mat-icon>
+    </button>
+  </div>
 </div>
-
-
-

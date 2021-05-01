@@ -16,10 +16,16 @@
     <app-ready-process></app-ready-process>
   </div>
   <div class="escalonamento">
-    <h2>Politica de Escalonamento FCFS</h2>
-    <p>Tempo Atual (24)</p>
+    <h2>Política de Escalonamento ({{ politica }})</h2>
+    <p>Tempo Atual ({{ tempoAtual }})</p>
   </div>
- <div class="timeline" *ngIf="state$ | async">
-    <app-timeline [nomes]="nomes"></app-timeline>
+  <div class="timeline" *ngIf="state$ | async">
+    <app-timeline
+      [nomes]="nomes"
+      (onNext)="next()"
+      (onPrevious)="previous()"
+      (onStart)="start()"
+      (onReset)="reset()"
+    ></app-timeline>
   </div>
 </div>

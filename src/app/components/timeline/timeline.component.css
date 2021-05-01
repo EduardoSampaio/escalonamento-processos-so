@@ -1,30 +1,61 @@
 table,
-th
-{
+th,td {
   border: 1px solid black;
-  border-collapse: collapse;
   font-size: 15px;
+  border-collapse: collapse;
 }
+
+
 .content {
   width: 100%;
   display: flex;
-  flex-flow: row nowrap;
-  margin-top: 30px;
+  flex-flow: row wrap;
 }
 
 .content-processo{
-  width: 25px;
-  margin-top: 18px;
+  width: 30px;
+  height: 242px;
   margin-left: 30px;
+  margin-top: 20px;
+  border-left: 1px solid black;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  background-color: var(--main-bg-color-2);
+  color:var(--cor-light);
 }
 
 .content-processo div{
-  padding-top: 10px;
+  padding-top: 5px;
+  padding-left: 2px;
+  border-bottom: 1px solid black;
 }
 
-.content-table{
-  width: 95%;
-  margin-left: 30px;
+.content-processo div:first-child{
+  padding-top: 4px;
+  border-bottom: 1px solid black;
+}
+
+.content-processo div:last-child {
+  padding-top: 5px;
+  padding-bottom: 1px;
+  border-bottom: 1px solid black;
+}
+
+.content-table {
+  width: 90%;
+  margin-right: 20px;
+  min-height: 180px;
+  overflow-x: scroll;
+}
+
+.btn-actions {
+  width: 100%;
+  height: 50px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
 }
 
 .cell-processo {
@@ -32,15 +63,55 @@ th
   padding-bottom: 10px;
 }
 
-tr td{
-  padding-left: 6px;
-  padding-right: 6px;
+th{
+  padding-left: 5px;
+  padding-right: 5px;
+  background-color:var(--cor-info);
+  color:var(--cor-light);
+}
+tr td {
+  padding-left: 8px;
+  padding-right: 8px;
+  padding-top: 12px;
+  padding-bottom: 12px;
 }
 
 .preenchido {
   background-color: black;
 }
 
-.vazio{
+.vazio {
   background-color: transparent;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+::-webkit-scrollbar {
+  width: 1em;
+}
+
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
 }

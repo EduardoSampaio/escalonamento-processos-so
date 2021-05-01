@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-timeline',
@@ -7,7 +7,12 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class TimelineComponent implements OnInit {
 
-  colunas = new Array(51);
+  @Output() onReset = new EventEmitter();
+  @Output() onStart = new EventEmitter();
+  @Output() onNext = new EventEmitter();
+  @Output() onPrevious = new EventEmitter();
+
+  colunas = new Array(50);
   @Input() nomes;
   constructor() {
     console.log(this.colunas);
@@ -17,4 +22,11 @@ export class TimelineComponent implements OnInit {
     console.log(this.nomes);
   }
 
+  reset(): void { this.onReset.emit() }
+
+  start(): void { this.onStart.emit() }
+
+  next(): void { this.onNext.emit() }
+
+  previous(): void { this.onPrevious.emit() }
 }

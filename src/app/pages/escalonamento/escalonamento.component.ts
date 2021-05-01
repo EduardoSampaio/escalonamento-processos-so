@@ -14,18 +14,22 @@ export class EscalonamentoComponent implements OnInit {
   tempoMaximo = 0;
   state$: Observable<object>;
   processos: Escalonamento[];
+  politica: string;
   nomes = [];
+  tempoAtual = 0;
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute) {
-    if (this.router.getCurrentNavigation().extras.state === undefined) {
-      this.router.navigate(['']);
-    }
+    // if (this.router.getCurrentNavigation().extras.state === undefined) {
+    //   this.router.navigate(['']);
+    // }
     this.state$ = this.activatedRoute.paramMap
       .pipe(map(() => window.history.state))
 
     this.state$.subscribe(data => {
       this.processos = data['processos'];
       this.nomes = this.processos.map(p => p.processo);
+      this.politica = data['id'] == '1' ? 'SPN' : 'SRT';
+      this.tempoMaximo = data['tempo'];
     });
   }
 
@@ -36,5 +40,17 @@ export class EscalonamentoComponent implements OnInit {
     this.router.navigate(['']);
   }
 
+  next(): void {
+    if (this.tempoAtual < this.tempoMaximo) {
+      this.tempoAtual++;
+    }
 
+  }
+  previous(): void {
+    if (this.tempoAtual > 0) {
+      this.tempoAtual--;
+    }
+  }
+  reset(): void { console.log('reset'); }
+  start(): void { console.log('start') }
 }
