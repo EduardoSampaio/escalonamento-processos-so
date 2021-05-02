@@ -48,4 +48,10 @@
   text-align: center;
 }
 
-.content-btn-voltar {}
+.preenchido {
+  background-color: black;
+}
+
+.vazio {
+  background-color: transparent;
+}

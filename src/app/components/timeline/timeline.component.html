@@ -1,46 +1,14 @@
 <div class="content">
   <div class="content-processo">
-    <div>P1</div>
-    <div>P2</div>
-    <div>P3</div>
-    <div>P4</div>
-    <div>P5</div>
-    <div>P6</div>
-    <div>P7</div>
-    <div>P9</div>
-    <div>P10</div>
+    <div *ngFor="let nome of nomes">{{nome}}</div>
   </div>
   <div class="content-table">
     <table>
       <tr>
         <th *ngFor="let item of colunas; let i = index">{{ i }}</th>
       </tr>
-      <tr>
-        <td *ngFor="let item of colunas; let i = index"></td>
-      </tr>
-      <tr>
-        <td *ngFor="let item of colunas; let i = index"></td>
-      </tr>
-      <tr>
-        <td *ngFor="let item of colunas; let i = index"></td>
-      </tr>
-      <tr>
-        <td *ngFor="let item of colunas; let i = index"></td>
-      </tr>
-      <tr>
-        <td *ngFor="let item of colunas; let i = index"></td>
-      </tr>
-      <tr>
-        <td *ngFor="let item of colunas; let i = index"></td>
-      </tr>
-      <tr>
-        <td *ngFor="let item of colunas; let i = index"></td>
-      </tr>
-      <tr>
-        <td *ngFor="let item of colunas; let i = index"></td>
-      </tr>
-      <tr>
-        <td *ngFor="let item of colunas; let i = index"></td>
+      <tr *ngFor="let nome of nomes">
+        <td *ngFor="let item of colunas; let i = index" id="{{nome}}-{{i}}"></td>
       </tr>
     </table>
   </div>
