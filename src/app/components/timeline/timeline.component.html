@@ -1,6 +1,6 @@
 <div class="content">
   <div class="content-processo">
-    <div *ngFor="let nome of nomes">{{nome}}</div>
+    <div *ngFor="let nome of nomes">{{ nome }}</div>
   </div>
   <div class="content-table">
     <table>
@@ -8,7 +8,10 @@
         <th *ngFor="let item of colunas; let i = index">{{ i }}</th>
       </tr>
       <tr *ngFor="let nome of nomes">
-        <td *ngFor="let item of colunas; let i = index" id="{{nome}}-{{i}}"></td>
+        <td
+          *ngFor="let item of colunas; let i = index"
+          id="{{ nome }}-{{ i }}"
+        ></td>
       </tr>
     </table>
   </div>
