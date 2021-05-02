@@ -87,7 +87,6 @@ export class TelaInicialComponent implements OnInit {
       this.validValues(newObj);
       lista.push(newObj);
     }
-    this.requiredValues();
     this.csvRecords = lista;
   }
 
