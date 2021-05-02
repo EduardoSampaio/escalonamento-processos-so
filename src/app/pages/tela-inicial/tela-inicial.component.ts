@@ -42,9 +42,17 @@ export class TelaInicialComponent implements OnInit {
       // tslint:disable-next-line: deprecation
       .pipe().subscribe((result: Array<any>) => {
         this.csvToModel(result);
+        this.verificarQtdProcesso();
       }, (error: NgxCSVParserError) => {
         console.log('Error', error);
       });
+  }
+
+  private verificarQtdProcesso() {
+    if (this.csvRecords.length > 10) {
+      this.showMessage('O arquivo pode possuir no máximo 10 processos');
+      this.clearFile(undefined);
+    }
   }
 
   private verificarSelection(): void {
@@ -61,13 +69,11 @@ export class TelaInicialComponent implements OnInit {
     this.verificarSelection();
   }
 
-  private csvToModel(result: Array<any>): void
-  {
+  private csvToModel(result: Array<any>): void {
     this.csvRecords = [];
     const lista: Array<Escalonamento> = [];
 
-    for (const obj of result)
-    {
+    for (const obj of result) {
       const newObj = new Escalonamento();
       newObj.processo = obj[0];
       newObj.chegada = obj[1];
@@ -81,26 +87,40 @@ export class TelaInicialComponent implements OnInit {
       this.validValues(newObj);
       lista.push(newObj);
     }
+    this.requiredValues();
     this.csvRecords = lista;
   }
 
-  private validValues(escalonamento: Escalonamento): void
-  {
+  private validValues(escalonamento: Escalonamento): void {
     const values = Object.values(escalonamento);
-    for (let i = 1; i < values.length; i++)
-    {
-      if (values[i] !== undefined && values[i] < 0)
-      {
+    for (let i = 1; i < values.length; i++) {
+      if (values[i] !== undefined && values[i] < 0) {
         this.clearFile(undefined);
-        this.showMessage();
+        this.showMessage('O Arquivo importado possui valores negativos');
       }
 
     }
   }
 
-  showMessage(): void {
+  private requiredValues()
+  {
+    const isValid = this.csvRecords.every(obj => {
+      obj[0] !== undefined &&
+      obj[1] !== undefined &&
+      obj[2] !== undefined
+    });
+
+    if (isValid)
+    {
+      this.showMessage('O arquivo não possui todos valores obrigatórios');
+      this.clearFile(undefined);
+    }
+
+  }
+
+  private showMessage(msg: string): void {
     this.snackbar.open(
-      `O Arquivo importado possui valores negativos`,
+      msg,
       'X',
       {
         duration: 5000,
