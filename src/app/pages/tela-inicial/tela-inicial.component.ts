@@ -88,6 +88,7 @@ export class TelaInicialComponent implements OnInit {
       lista.push(newObj);
     }
     this.csvRecords = lista;
+    this.requiredValues();
   }
 
   private validValues(escalonamento: Escalonamento): void {
@@ -103,16 +104,15 @@ export class TelaInicialComponent implements OnInit {
 
   private requiredValues()
   {
-    const isValid = this.csvRecords.every(obj => {
-      obj[0] !== undefined &&
-      obj[1] !== undefined &&
-      obj[2] !== undefined
-    });
-
-    if (isValid)
+    for (const value of this.csvRecords)
     {
-      this.showMessage('O arquivo não possui todos valores obrigatórios');
-      this.clearFile(undefined);
+      console.log(value);
+      if (value.processo === undefined || value.chegada === undefined || value.tempoExecucao === undefined)
+      {
+        this.clearFile(undefined);
+        this.showMessage('Os campos nome do processo/tempo chegada/ tempo execução são obrigatórios');
+        return;
+      }
     }
 
   }

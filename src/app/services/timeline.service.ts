@@ -12,5 +12,26 @@ export class TimelineService {
 
   constructor() { }
 
+  enqueueReady(processo: any): void {
+    this.queueReady.push(processo)
+  }
 
+  dequeueReady(): void {
+    if (this.queueReady.length > 0)
+    {
+      this.queueReady.shift();
+    }
+  }
+
+  enqueueWait(): void { }
+
+  dequeueWait(): void { }
+
+  enqueueNext(): void { }
+
+  dequeueNext(): void { }
+
+  pushPrevious(): void { }
+
+  popPrevious(): void { }
 }
