@@ -19,9 +19,7 @@ export class EscalonamentoSrtService {
 
   constructor() { }
 
-  executar(processos: Processo[]): void {
-    throw new Error('Method not implemented.');
-  }
+  executar(processos: Processo[]): void {}
 
   enqueueNext(processo: Processo): void {
     this.queueNext.push(processo);

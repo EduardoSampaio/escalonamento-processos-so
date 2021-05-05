@@ -40,7 +40,7 @@ export class EscalonamentoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.executarEscalonamento();
+    //this.executarEscalonamento();
   }
 
   back(): void {
