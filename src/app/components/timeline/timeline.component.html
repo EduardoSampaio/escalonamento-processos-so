@@ -8,47 +8,17 @@
         <th *ngFor="let item of colunas; let i = index">{{ i }}</th>
       </tr>
       <tr *ngFor="let nome of nomes">
-        <td
-          *ngFor="let item of colunas; let i = index"
-          id="{{ nome }}-{{ i }}"
-        ></td>
+        <td *ngFor="let item of colunas; let i = index" id="{{ nome }}-{{ i }}"></td>
       </tr>
     </table>
   </div>
 
   <div class="btn-actions">
-    <button
-      mat-stroked-button
-      color="warn"
-      matTooltip="Reset Escalonamento"
-      (click)="reset()"
-    >
-      <mat-icon>refresh</mat-icon>
-    </button>
-    <button
-      mat-stroked-button
-      color="primary"
-      matTooltip="Volta na timeline"
-      style="margin-left: 10px"
-      (click)="previous()"
-    >
+    <button mat-stroked-button color="primary" matTooltip="Volta na timeline" style="margin-right: 10px"
+      (click)="previous()">
       <mat-icon>skip_previous</mat-icon>
     </button>
-    <button
-      mat-stroked-button
-      color="primary"
-      matTooltip="Inicia o Escalonamento"
-      style="margin-left: 10px; margin-right: 10px"
-      (click)="start()"
-    >
-      <mat-icon>play_circle_outline</mat-icon>
-    </button>
-    <button
-      mat-stroked-button
-      color="primary"
-      matTooltip="Avança na timeline"
-      (click)="next()"
-    >
+    <button mat-stroked-button color="primary" matTooltip="Avança na timeline" (click)="next()">
       <mat-icon>skip_next</mat-icon>
     </button>
   </div>

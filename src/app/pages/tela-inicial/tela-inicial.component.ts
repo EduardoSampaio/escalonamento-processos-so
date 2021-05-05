@@ -3,6 +3,7 @@ import { Escalonamento } from './../../models/escalonamento.model';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgxCsvParser, NgxCSVParserError } from 'ngx-csv-parser';
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'app-tela-inicial',
@@ -89,6 +90,7 @@ export class TelaInicialComponent implements OnInit {
     }
     this.csvRecords = lista;
     this.requiredValues();
+    this.calcularTempoMaximo();
   }
 
   private validValues(escalonamento: Escalonamento): void {
@@ -102,19 +104,34 @@ export class TelaInicialComponent implements OnInit {
     }
   }
 
-  private requiredValues()
-  {
-    for (const value of this.csvRecords)
-    {
-      console.log(value);
-      if (value.processo === undefined || value.chegada === undefined || value.tempoExecucao === undefined)
-      {
+  private requiredValues() {
+    for (const value of this.csvRecords) {
+      if (value.processo === undefined || value.chegada === undefined || value.tempoExecucao === undefined) {
         this.clearFile(undefined);
         this.showMessage('Os campos nome do processo/tempo chegada/ tempo execução são obrigatórios');
         return;
       }
     }
+  }
 
+  private calcularTempoMaximo(): void {
+    let soma = 0;
+
+    for (const value of this.csvRecords) {
+      if (value.tempoEs1 !== undefined) {
+        soma += parseInt(value.tempoEs1.toString());
+      }
+
+      if (value.tempoEs2 !== undefined) {
+        soma += parseInt(value.tempoEs2.toString());
+      }
+
+      if (value.tempoExecucao !== undefined) {
+
+      } soma += parseInt(value.tempoExecucao.toString());
+
+    }
+    this.tempoMaximo = soma;
   }
 
   private showMessage(msg: string): void {
@@ -127,5 +144,9 @@ export class TelaInicialComponent implements OnInit {
         verticalPosition: 'top',
       }
     );
+  }
+
+  download(): void {
+    saveAs('assets/template.csv', 'template.csv')
   }
 }

@@ -18,7 +18,6 @@ export class ProcessTableComponent implements OnInit {
 
   ngOnInit(): void {
     this.dataSource = this.data;
-    console.log(this.dataSource);
   }
 
 }

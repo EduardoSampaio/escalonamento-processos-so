@@ -27,6 +27,7 @@
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.css"
             ],
+            "allowedCommonJsDependencies": ["file-saver"],
             "scripts": []
           },
           "configurations": {

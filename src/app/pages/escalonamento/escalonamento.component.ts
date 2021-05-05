@@ -1,3 +1,6 @@
+import { Processo } from './../../models/processo.model';
+import { EscalonamentoSrtService } from './../../services/escalonamento-srt.service';
+import { EscalonamentoSpnService } from './../../services/escalonamento-spn.service';
 import { Escalonamento } from './../../models/escalonamento.model';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -16,12 +19,15 @@ export class EscalonamentoComponent implements OnInit {
   processos: Escalonamento[];
   politica: string;
   nomes = [];
-  tempoAtual = 0;
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute) {
-    // if (this.router.getCurrentNavigation().extras.state === undefined) {
-    //   this.router.navigate(['']);
-    // }
+  constructor(
+    private escalonamentoSpnService: EscalonamentoSpnService,
+    private escalonamentoSrtService: EscalonamentoSrtService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute) {
+    if (this.router.getCurrentNavigation().extras.state === undefined) {
+      this.router.navigate(['']);
+    }
     this.state$ = this.activatedRoute.paramMap
       .pipe(map(() => window.history.state))
 
@@ -34,6 +40,7 @@ export class EscalonamentoComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.executarEscalonamento();
   }
 
   back(): void {
@@ -41,21 +48,50 @@ export class EscalonamentoComponent implements OnInit {
   }
 
   next(): void {
-    if (this.tempoAtual < this.tempoMaximo) {
-      this.tempoAtual++;
+    let processo: Processo;
+
+    if (this.politica === 'SPN') {
+      processo = this.escalonamentoSpnService.dequeueNext();
     }
-    var element = document.getElementById("P3-18");
-    element.style.backgroundColor = "black";
+    if (this.politica === 'SRT') {
+      processo = this.escalonamentoSrtService.dequeueNext();
+    }
+
+    if (processo !== undefined)
+    {
+      for (let i = processo.proxInicio; i <= processo.proxTermino; i++) {
+        const id = `${processo.nome}-${i}`;
+        let element = document.getElementById(id);
+        if (element !== null)
+        {
+          element.style.backgroundColor = "black";
+        }
+      }
+    }
   }
+
   previous(): void {
-    if (this.tempoAtual > 0) {
-      this.tempoAtual--;
+    let processo: Processo;
+    if (this.politica === 'SPN') {
+      processo = this.escalonamentoSpnService.popPrevious();
+    }
+    if (this.politica === 'SRT') {
+      processo = this.escalonamentoSrtService.popPrevious();
     }
 
-    var element = document.getElementById("P3-18");
-    element.style.backgroundColor = "white";
-
+    for (let i = processo.proxInicio; i <= processo.proxTermino; i++) {
+      const id = `${processo.nome}-${i}`;
+      let element = document.getElementById(id);
+      element.style.backgroundColor = "white";
+    }
   }
-  reset(): void { console.log('reset'); }
-  start(): void { console.log('start') }
+
+  private executarEscalonamento(): void {
+    if (this.politica === 'SPN') {
+      this.escalonamentoSpnService.executar(this.processos);
+    }
+    if (this.politica === 'SRT') {
+      this.escalonamentoSpnService.executar(this.processos);
+    }
+  }
 }

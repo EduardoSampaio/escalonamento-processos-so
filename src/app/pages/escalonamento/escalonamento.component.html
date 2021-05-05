@@ -6,26 +6,22 @@
       </button>
     </div>
     <div class="titulo">
+      <mat-icon>schedule</mat-icon>
       <h1>Escalonamento de Processos</h1>
     </div>
   </div>
   <div class="tabela" *ngIf="state$ | async">
     <app-process-table [data]="processos"></app-process-table>
   </div>
-  <div class="pronto">
+  <!-- <div class="pronto">
     <app-ready-process></app-ready-process>
-  </div>
+  </div> -->
   <div class="escalonamento">
     <h2>Política de Escalonamento ({{ politica }})</h2>
-    <p>Tempo Atual ({{ tempoAtual }})</p>
+    <!-- <p>Tempo Atual ({{ tempoAtual }})</p> -->
   </div>
   <div class="timeline" *ngIf="state$ | async">
-    <app-timeline
-      [nomes]="nomes"
-      (onNext)="next()"
-      (onPrevious)="previous()"
-      (onStart)="start()"
-      (onReset)="reset()"
-    ></app-timeline>
+    <app-timeline [nomes]="nomes" (onNext)="next()" [tempoMaximo]="tempoMaximo" (onPrevious)="previous()" (onStart)="start()" (onReset)="reset()">
+    </app-timeline>
   </div>
 </div>

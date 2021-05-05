@@ -1,6 +1,6 @@
 <div class="content">
   <div class="titulo">
-    <h1>Escalonamento de Processos</h1>
+    <h1>Escalonamento de Processos </h1>
   </div>
   <div class="content-box">
     <div class="content-combo">
@@ -11,15 +11,15 @@
           <mat-option value="2">SRT</mat-option>
         </mat-select>
       </mat-form-field>
-  </div>
-  <div class="content-import">
-    <app-import-csv (selectedFile)="importarCsv($event)" (clearFile)="clearFile($event)"></app-import-csv>
-  </div>
+    </div>
+    <div class="content-import">
+      <app-import-csv (selectedFile)="importarCsv($event)" (clearFile)="clearFile($event)"></app-import-csv>
+    </div>
+    <mat-icon title="Arquivo de exemplo" style="cursor: pointer;" (click)="download()">cloud_download</mat-icon>
   </div>
   <div class="content-btn">
-
-    <button mat-raised-button color="primary" (click)="start()" [disabled]="isDisable"  class="btn-iniciar">
-       Iniciar
+    <button mat-raised-button color="primary" (click)="start()" [disabled]="isDisable" class="btn-iniciar">
+      Iniciar
     </button>
   </div>
 </div>
