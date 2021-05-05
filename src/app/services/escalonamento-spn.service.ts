@@ -31,12 +31,7 @@ export class EscalonamentoSpnService {
 
   constructor() { }
 
-  executar(processos: Escalonamento[]): void {
-    throw new Error('Method not implemented.');
-    let tempo = 0;
-    const valores = processos.filter(p => p.chegada <= tempo);
-
-  }
+  executar(processos: Escalonamento[]): void {}
 
   enqueueNext(processo: Processo): void {
     this.queueNext.push(processo);
