@@ -28,7 +28,14 @@ export class TelaInicialComponent implements OnInit {
   }
 
   start(): void {
-    this.router.navigateByUrl('/escalonamento', { state: { id: this.selectedValue, processos: this.csvRecords, tempo: this.tempoMaximo } });
+    this.router.navigateByUrl('/escalonamento', {
+      state:
+      {
+        id: this.selectedValue,
+        processos: this.csvRecords,
+        tempo: this.tempoMaximo
+      }
+    });
   }
 
   selectionChange(): void {
@@ -45,7 +52,8 @@ export class TelaInicialComponent implements OnInit {
         this.csvToModel(result);
         this.verificarQtdProcesso();
       }, (error: NgxCSVParserError) => {
-        console.log('Error', error);
+        this.showMessage('Erro ao importar Arquivo');
+        this.clearFile(undefined);
       });
   }
 
@@ -99,8 +107,32 @@ export class TelaInicialComponent implements OnInit {
       if (values[i] !== undefined && values[i] < 0) {
         this.clearFile(undefined);
         this.showMessage('O Arquivo importado possui valores negativos');
+        return;
       }
+    }
 
+    if (escalonamento.chegada > 50) {
+      this.clearFile(undefined);
+      this.showMessage('O Arquivo importado deve possuir no máximo 50 para valor chegada');
+      return;
+    }
+
+    if (escalonamento.tempoExecucao > 10) {
+      this.clearFile(undefined);
+      this.showMessage('O Arquivo importado deve possuir no máximo 10 para valor tempo execução');
+      return;
+    }
+
+    if (escalonamento.tempoEs1 !== undefined && escalonamento.tempoEs1 > 5) {
+      this.clearFile(undefined);
+      this.showMessage('O Arquivo importado deve possuir no máximo 5 para valor E/S');
+      return;
+    }
+
+    if (escalonamento.tempoEs2 !== undefined && escalonamento.tempoEs2 > 5) {
+      this.clearFile(undefined);
+      this.showMessage('O Arquivo importado deve possuir no máximo 5 para valor E/S');
+      return;
     }
   }
 

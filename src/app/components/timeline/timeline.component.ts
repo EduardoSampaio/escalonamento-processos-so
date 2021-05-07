@@ -19,7 +19,7 @@ export class TimelineComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.colunas = new Array(this.tempoMaximo + 1);
+    this.colunas = new Array(this.tempoMaximo + 10);
   }
 
   reset(): void { this.onReset.emit() }

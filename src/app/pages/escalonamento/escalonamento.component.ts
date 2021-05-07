@@ -40,7 +40,7 @@ export class EscalonamentoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    //this.executarEscalonamento();
+    this.executarEscalonamento();
   }
 
   back(): void {
@@ -59,7 +59,7 @@ export class EscalonamentoComponent implements OnInit {
 
     if (processo !== undefined)
     {
-      for (let i = processo.proxInicio; i <= processo.proxTermino; i++) {
+      for (let i = processo.inicio; i <= processo.termino; i++) {
         const id = `${processo.nome}-${i}`;
         let element = document.getElementById(id);
         if (element !== null)
@@ -79,7 +79,7 @@ export class EscalonamentoComponent implements OnInit {
       processo = this.escalonamentoSrtService.popPrevious();
     }
 
-    for (let i = processo.proxInicio; i <= processo.proxTermino; i++) {
+    for (let i = processo.inicio; i <= processo.termino; i++) {
       const id = `${processo.nome}-${i}`;
       let element = document.getElementById(id);
       element.style.backgroundColor = "white";
@@ -88,10 +88,10 @@ export class EscalonamentoComponent implements OnInit {
 
   private executarEscalonamento(): void {
     if (this.politica === 'SPN') {
-      this.escalonamentoSpnService.executar(this.processos);
+      this.escalonamentoSpnService.executar(this.processos, this.tempoMaximo);
     }
     if (this.politica === 'SRT') {
-      this.escalonamentoSpnService.executar(this.processos);
+      this.escalonamentoSpnService.executar(this.processos, this.tempoMaximo);
     }
   }
 }
