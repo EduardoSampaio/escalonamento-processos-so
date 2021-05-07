@@ -5,10 +5,10 @@
   <div class="content-table">
     <table>
       <tr>
-        <th *ngFor="let item of colunas; let i = index">{{ i + 1 }}</th>
+        <th *ngFor="let item of colunas; let i = index">{{ i }}</th>
       </tr>
       <tr *ngFor="let nome of nomes">
-        <td *ngFor="let item of colunas; let i = index" id="{{ nome }}-{{ i + 1 }}"></td>
+        <td *ngFor="let item of colunas; let i = index" id="{{ nome }}-{{ i}}"></td>
       </tr>
     </table>
   </div>

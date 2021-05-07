@@ -115,7 +115,6 @@ export class EscalonamentoSpnService {
   }
 
   executar(processos: Escalonamento[], maxTime: number): void {
-    this.create(processos);
     console.log(this.listProcess);
     this.MAXTIME = maxTime;
     let inicio = this.TIME;
@@ -133,12 +132,12 @@ export class EscalonamentoSpnService {
             } else {
                 processo.tempoRestante--;
                 if (processo.termino === undefined) {
-                    processo.termino = this.TIME + 1;
+                    processo.termino = this.TIME;
                     this.queueNext.push(processo);
                 } else {
                     let newProcesso = this.createProcess(processo);
                     newProcesso.inicio = inicio;
-                    newProcesso.termino = this.TIME + 1;
+                    newProcesso.termino = this.TIME;
                     this.queueNext.push(newProcesso);
                 }
 
@@ -147,7 +146,7 @@ export class EscalonamentoSpnService {
         } else {
             let newProcesso = this.createProcess(processo);
             newProcesso.inicio = inicio;
-            newProcesso.termino = this.TIME + 1;
+            newProcesso.termino = this.TIME;
             this.queueNext.push(newProcesso);
             this.queueWait.push(newProcesso);
             processo =  this.nextProcess(this.TIME)
