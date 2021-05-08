@@ -25,6 +25,7 @@ export class TelaInicialComponent implements OnInit {
     private snackbar: MatSnackBar) { }
 
   ngOnInit(): void {
+
   }
 
   start(): void {
@@ -53,14 +54,14 @@ export class TelaInicialComponent implements OnInit {
         this.verificarQtdProcesso();
       }, (error: NgxCSVParserError) => {
         this.showMessage('Erro ao importar Arquivo');
-        this.clearFile(undefined);
+        this.clearFile();
       });
   }
 
   private verificarQtdProcesso() {
     if (this.csvRecords.length > 10) {
       this.showMessage('O arquivo pode possuir no máximo 10 processos');
-      this.clearFile(undefined);
+      this.clearFile();
     }
   }
 
@@ -72,7 +73,7 @@ export class TelaInicialComponent implements OnInit {
     }
   }
 
-  clearFile(event: any): void {
+  clearFile(): void {
     this.file = null;
     this.csvRecords = [];
     this.verificarSelection();
@@ -88,50 +89,76 @@ export class TelaInicialComponent implements OnInit {
       newObj.chegada = obj[1];
       newObj.tempoExecucao = obj[2];
       newObj.tempoRestante = obj[2];
-      newObj.tempoEs1 = obj[3];
-      newObj.es1 = obj[4];
-      newObj.tempoEs2 = obj[5];
-      newObj.es2 = obj[6];
+
+      if(obj[3] !== undefined &&  obj[4] !== undefined)
+      {
+        newObj.tempoEs1 = obj[3];
+        newObj.es1 = obj[4];
+        newObj.esperando1 = Number(newObj.tempoEs1) + Number(newObj.es1);
+      }
+
+      if(obj[5] !== undefined &&  obj[6] !== undefined)
+      {
+        newObj.tempoEs2 = obj[5];
+        newObj.es2 = obj[6];
+        newObj.esperando2 = Number(newObj.tempoEs2) + Number(newObj.es2);
+      }
       // tslint:disable-next-line: radix
       this.tempoMaximo += parseInt(obj[2]);
       this.validValues(newObj);
       lista.push(newObj);
     }
     this.csvRecords = lista;
+    this.validNomes();
     this.requiredValues();
-    this.calcularTempoMaximo();
+  }
+
+  private validNomes(){
+    if(this.csvRecords.length > 0)
+    {
+      for(const row of this.csvRecords)
+      {
+          const nomes = this.csvRecords.filter((e) => e.nome == row.nome);
+          if(nomes.length > 1)
+          {
+            this.clearFile();
+            this.showMessage('O Arquivo possui nomes de processo repetidos');
+            return;
+          }
+      }
+    }
   }
 
   private validValues(processo: Processo): void {
     const values = Object.values(processo);
     for (let i = 1; i < values.length; i++) {
       if (values[i] !== undefined && values[i] < 0) {
-        this.clearFile(undefined);
+        this.clearFile();
         this.showMessage('O Arquivo importado possui valores negativos');
         return;
       }
     }
 
     if (processo.chegada > 50) {
-      this.clearFile(undefined);
+      this.clearFile();
       this.showMessage('O Arquivo importado deve possuir no máximo 50 para valor chegada');
       return;
     }
 
     if (processo.tempoExecucao > 10) {
-      this.clearFile(undefined);
+      this.clearFile();
       this.showMessage('O Arquivo importado deve possuir no máximo 10 para valor tempo execução');
       return;
     }
 
-    if (processo.tempoEs1 !== undefined && processo.tempoEs1 > 5) {
-      this.clearFile(undefined);
+    if (processo.tempoEs1 !== undefined && processo.es1 > 5) {
+      this.clearFile();
       this.showMessage('O Arquivo importado deve possuir no máximo 5 para valor E/S');
       return;
     }
 
-    if (processo.tempoEs2 !== undefined && processo.tempoEs2 > 5) {
-      this.clearFile(undefined);
+    if (processo.tempoEs2 !== undefined && processo.es2 > 5) {
+      this.clearFile();
       this.showMessage('O Arquivo importado deve possuir no máximo 5 para valor E/S');
       return;
     }
@@ -140,7 +167,7 @@ export class TelaInicialComponent implements OnInit {
   private requiredValues() {
     for (const value of this.csvRecords) {
       if (value.nome === undefined || value.chegada === undefined || value.tempoExecucao === undefined) {
-        this.clearFile(undefined);
+        this.clearFile();
         this.showMessage('Os campos nome do processo/tempo chegada/ tempo execução são obrigatórios');
         return;
       }

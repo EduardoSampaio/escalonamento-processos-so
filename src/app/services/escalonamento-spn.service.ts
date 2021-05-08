@@ -50,8 +50,8 @@ export class EscalonamentoSpnService {
     return 0;
   }
 
-  nextWait(time: number) {
-    let emEspera = this.queueWait.filter((e) => e.esperando == time);
+  nextWait(time: number): void {
+    const emEspera = this.queueWait.filter((e) => (e.esperando1 == this.TIME) || (e.esperando2 == this.TIME));
     for (const processo of emEspera) {
       this.removeEspera(processo);
       this.listProcess.push(processo);
@@ -59,16 +59,16 @@ export class EscalonamentoSpnService {
   }
 
   nextProcess(nextTime: number): Processo {
-    let values = this.listProcess.filter((e) => e.chegada <= nextTime);
+    const values = this.listProcess.filter((e) => e.chegada <= nextTime);
     if (values.length > 0) {
-      let nextProcess = values.sort(this.compare)[0];
+      const nextProcess = values.sort(this.compare)[0];
       this.removeList(nextProcess);
       return nextProcess;
     }
     return null;
   }
 
-  isWaitProcess(processo: Processo) {
+  isWaitProcess(processo: Processo): boolean {
     if ((processo.tempoEs1 !== undefined && processo.tempoEs1 == this.TIME)
       || (processo.tempoEs2 !== undefined && processo.tempoEs2 == this.TIME)) {
       return true;
@@ -87,46 +87,60 @@ export class EscalonamentoSpnService {
     return { ...processo };
   }
 
+  addNew(processo: Processo, inicio: number): Processo {
+    if (processo.termino === undefined) {
+      processo.termino = this.TIME;
+      this.queueNext.push(processo);
+    }
+    else {
+      const newProcesso = this.createProcess(processo);
+      newProcesso.inicio = inicio;
+      newProcesso.termino = this.TIME;
+      this.queueNext.push(newProcesso);
+    }
+    processo = this.nextProcess(this.TIME);
+    return processo;
+  }
+
   executar(processos: Processo[], maxTime: number): void {
     this.listProcess = processos;
-    console.log(this.listProcess);
     this.MAXTIME = maxTime;
     let inicio = this.TIME;
     let processo = this.nextProcess(this.TIME);
     for (this.TIME; this.TIME <= this.MAXTIME + 1 && processo != null; this.TIME++) {
-        if (processo.inicio === undefined) {
-            processo.inicio = inicio;
+      if (processo.inicio === undefined) {
+        processo.inicio = inicio;
+      }
+      if (!this.isEmptyWaitQueue()) {
+        this.nextWait(this.MAXTIME);
+      }
+      if (!this.isWaitProcess(processo)) {
+        if (processo.tempoRestante > 1) {
+          processo.tempoRestante--;
         }
-        if (!this.isEmptyWaitQueue()) {
-            this.nextWait(this.MAXTIME);
+        else {
+          processo.tempoRestante--;
+          processo = this.addNew(processo, inicio);
         }
-        if (!this.isWaitProcess(processo)) {
-            if (processo.tempoRestante > 1) {
-                processo.tempoRestante--;
-            } else {
-                processo.tempoRestante--;
-                if (processo.termino === undefined) {
-                    processo.termino = this.TIME;
-                    this.queueNext.push(processo);
-                } else {
-                    let newProcesso = this.createProcess(processo);
-                    newProcesso.inicio = inicio;
-                    newProcesso.termino = this.TIME;
-                    this.queueNext.push(newProcesso);
-                }
+      } else {
+        const newProcesso = this.createProcess(processo);
+        if (processo.tempoEs1 !== undefined && processo.tempoEs1 == this.TIME) {
+          newProcesso.termino = (this.TIME - processo.es1) + 1;
+          this.TIME -= processo.es1 - 1;
+        }
 
-                processo = this.nextProcess(this.TIME);
-            }
-        } else {
-            let newProcesso = this.createProcess(processo);
-            newProcesso.inicio = inicio;
-            newProcesso.termino = this.TIME;
-            this.queueNext.push(newProcesso);
-            this.queueWait.push(newProcesso);
-            processo =  this.nextProcess(this.TIME)
+        if (processo.tempoEs2 !== undefined && processo.tempoEs1 == this.TIME) {
+          newProcesso.termino = (this.TIME - processo.es2) + 1;
+          this.TIME -= processo.es2 - 1;
         }
-        inicio = this.TIME + 1;
+
+        this.queueNext.push(newProcesso);
+        this.queueWait.push(newProcesso);
+        processo = this.nextProcess(this.TIME);
+      }
+      inicio = this.TIME + 1;
     }
+
   }
 
   enqueueNext(processo: Processo): void {

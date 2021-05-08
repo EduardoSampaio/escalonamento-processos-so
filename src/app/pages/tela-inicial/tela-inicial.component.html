@@ -13,7 +13,7 @@
       </mat-form-field>
     </div>
     <div class="content-import">
-      <app-import-csv (selectedFile)="importarCsv($event)" (clearFile)="clearFile($event)"></app-import-csv>
+      <app-import-csv (selectedFile)="importarCsv($event)" (clearFile)="clearFile()"></app-import-csv>
     </div>
     <mat-icon title="Arquivo de exemplo" style="cursor: pointer;" (click)="download()">cloud_download</mat-icon>
   </div>
