@@ -1,11 +1,10 @@
 import { Processo } from './../../models/processo.model';
 import { EscalonamentoSrtService } from './../../services/escalonamento-srt.service';
 import { EscalonamentoSpnService } from './../../services/escalonamento-spn.service';
-import { Escalonamento } from './../../models/escalonamento.model';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Component, ElementRef, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-escalonamento',
@@ -16,7 +15,7 @@ export class EscalonamentoComponent implements OnInit {
 
   tempoMaximo = 0;
   state$: Observable<object>;
-  processos: Escalonamento[];
+  processos: Processo[];
   politica: string;
   nomes = [];
 
@@ -33,7 +32,7 @@ export class EscalonamentoComponent implements OnInit {
 
     this.state$.subscribe(data => {
       this.processos = data['processos'];
-      this.nomes = this.processos.map(p => p.processo);
+      this.nomes = this.processos.map(p => p.nome);
       this.politica = data['id'] == '1' ? 'SPN' : 'SRT';
       this.tempoMaximo = data['tempo'];
     });

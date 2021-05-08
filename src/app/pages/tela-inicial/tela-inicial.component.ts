@@ -1,5 +1,5 @@
+import { Processo } from './../../models/processo.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Escalonamento } from './../../models/escalonamento.model';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgxCsvParser, NgxCSVParserError } from 'ngx-csv-parser';
@@ -16,7 +16,7 @@ export class TelaInicialComponent implements OnInit {
   selectedValue: any;
   file: File = null;
   tempoMaximo = 0;
-  csvRecords: Array<Escalonamento> = [];
+  csvRecords: Array<Processo> = [];
   header = false;
 
   constructor(
@@ -80,17 +80,18 @@ export class TelaInicialComponent implements OnInit {
 
   private csvToModel(result: Array<any>): void {
     this.csvRecords = [];
-    const lista: Array<Escalonamento> = [];
+    const lista: Array<Processo> = [];
 
     for (const obj of result) {
-      const newObj = new Escalonamento();
-      newObj.processo = obj[0];
+      const newObj = new Processo();
+      newObj.nome = obj[0];
       newObj.chegada = obj[1];
       newObj.tempoExecucao = obj[2];
-      newObj.es1 = obj[3];
-      newObj.tempoEs1 = obj[4];
-      newObj.es2 = obj[5];
-      newObj.tempoEs2 = obj[6];
+      newObj.tempoRestante = obj[2];
+      newObj.tempoEs1 = obj[3];
+      newObj.es1 = obj[4];
+      newObj.tempoEs2 = obj[5];
+      newObj.es2 = obj[6];
       // tslint:disable-next-line: radix
       this.tempoMaximo += parseInt(obj[2]);
       this.validValues(newObj);
@@ -101,8 +102,8 @@ export class TelaInicialComponent implements OnInit {
     this.calcularTempoMaximo();
   }
 
-  private validValues(escalonamento: Escalonamento): void {
-    const values = Object.values(escalonamento);
+  private validValues(processo: Processo): void {
+    const values = Object.values(processo);
     for (let i = 1; i < values.length; i++) {
       if (values[i] !== undefined && values[i] < 0) {
         this.clearFile(undefined);
@@ -111,25 +112,25 @@ export class TelaInicialComponent implements OnInit {
       }
     }
 
-    if (escalonamento.chegada > 50) {
+    if (processo.chegada > 50) {
       this.clearFile(undefined);
       this.showMessage('O Arquivo importado deve possuir no máximo 50 para valor chegada');
       return;
     }
 
-    if (escalonamento.tempoExecucao > 10) {
+    if (processo.tempoExecucao > 10) {
       this.clearFile(undefined);
       this.showMessage('O Arquivo importado deve possuir no máximo 10 para valor tempo execução');
       return;
     }
 
-    if (escalonamento.tempoEs1 !== undefined && escalonamento.tempoEs1 > 5) {
+    if (processo.tempoEs1 !== undefined && processo.tempoEs1 > 5) {
       this.clearFile(undefined);
       this.showMessage('O Arquivo importado deve possuir no máximo 5 para valor E/S');
       return;
     }
 
-    if (escalonamento.tempoEs2 !== undefined && escalonamento.tempoEs2 > 5) {
+    if (processo.tempoEs2 !== undefined && processo.tempoEs2 > 5) {
       this.clearFile(undefined);
       this.showMessage('O Arquivo importado deve possuir no máximo 5 para valor E/S');
       return;
@@ -138,7 +139,7 @@ export class TelaInicialComponent implements OnInit {
 
   private requiredValues() {
     for (const value of this.csvRecords) {
-      if (value.processo === undefined || value.chegada === undefined || value.tempoExecucao === undefined) {
+      if (value.nome === undefined || value.chegada === undefined || value.tempoExecucao === undefined) {
         this.clearFile(undefined);
         this.showMessage('Os campos nome do processo/tempo chegada/ tempo execução são obrigatórios');
         return;

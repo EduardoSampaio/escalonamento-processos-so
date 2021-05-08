@@ -7,8 +7,6 @@ import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 })
 export class TimelineComponent implements OnInit {
 
-  @Output() onReset = new EventEmitter();
-  @Output() onStart = new EventEmitter();
   @Output() onNext = new EventEmitter();
   @Output() onPrevious = new EventEmitter();
   @Input() tempoMaximo: number;
@@ -21,10 +19,6 @@ export class TimelineComponent implements OnInit {
   ngOnInit(): void {
     this.colunas = new Array(this.tempoMaximo + 10);
   }
-
-  reset(): void { this.onReset.emit() }
-
-  start(): void { this.onStart.emit() }
 
   next(): void { this.onNext.emit() }
 

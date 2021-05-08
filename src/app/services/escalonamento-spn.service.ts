@@ -1,16 +1,5 @@
-import { Escalonamento } from './../models/escalonamento.model';
 import { Processo } from './../models/processo.model';
 import { Injectable } from '@angular/core';
-
-
-// const processo: Array<Processo> = [
-//   { nome: 'P1', chegada: 0, inicio: 0, termino: 5, tempoExecucao: 5, tempoRestante: 0 },
-//   { nome: 'P2', chegada: 3, inicio: 6, termino: 9, tempoExecucao: 3, tempoRestante: 0 },
-//   { nome: 'P3', chegada: 6, inicio: 10, termino: 15, tempoExecucao: 5, tempoRestante: 0 },
-//   { nome: 'P4', chegada: 4, inicio: 16, termino: 22, tempoExecucao: 7, tempoRestante: 0 },
-// ]
-
-
 @Injectable({
   providedIn: 'root'
 })
@@ -98,23 +87,8 @@ export class EscalonamentoSpnService {
     return { ...processo };
   }
 
-  create(processos: Escalonamento[]): void {
-    for(const processo of processos)
-    {
-       let newProcess = new Processo();
-       newProcess.nome = processo.processo;
-       newProcess.chegada = processo.chegada;
-       newProcess.tempoExecucao = processo.tempoExecucao;
-       newProcess.tempoRestante = processo.tempoExecucao;
-       newProcess.es1 = processo.es1;
-       newProcess.es2 = processo.es2;
-       newProcess.tempoEs1 = processo.tempoEs1;
-       newProcess.tempoEs2 = processo.tempoEs2;
-       this.listProcess.push(newProcess);
-    }
-  }
-
-  executar(processos: Escalonamento[], maxTime: number): void {
+  executar(processos: Processo[], maxTime: number): void {
+    this.listProcess = processos;
     console.log(this.listProcess);
     this.MAXTIME = maxTime;
     let inicio = this.TIME;

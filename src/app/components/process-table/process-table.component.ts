@@ -1,5 +1,4 @@
-import { Router, ActivatedRoute } from '@angular/router';
-import { Escalonamento } from './../../models/escalonamento.model';
+import { Processo } from './../../models/processo.model';
 import { Component, Input, OnInit } from '@angular/core';
 
 
@@ -10,8 +9,8 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class ProcessTableComponent implements OnInit {
 
-  @Input() data: Escalonamento[];
-  displayedColumns: string[] = ['processo', 'chegada', 'execucao', 'es1', 'tempoEs1', 'es2', 'tempoEs2'];
+  @Input() data: Processo[];
+  displayedColumns: string[] = ['nome', 'chegada', 'execucao', 'tempoEs1', 'es1', 'tempoEs2', 'es2'];
   dataSource = [];
 
   constructor() {}
