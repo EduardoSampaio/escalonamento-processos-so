@@ -102,6 +102,22 @@ export class EscalonamentoSpnService {
     return processo;
   }
 
+  putWait(processo: Processo): void {
+    const newProcesso = this.createProcess(processo);
+    if (processo.tempoEs1 !== undefined && processo.tempoEs1 == this.TIME) {
+      newProcesso.termino = (this.TIME - processo.es1) + 1;
+      this.TIME -= processo.es1 - 1;
+    }
+
+    if (processo.tempoEs2 !== undefined && processo.tempoEs1 == this.TIME) {
+      newProcesso.termino = (this.TIME - processo.es2) + 1;
+      this.TIME -= processo.es2 - 1;
+    }
+
+    this.queueNext.push(newProcesso);
+    this.queueWait.push(newProcesso);
+  }
+
   executar(processos: Processo[], maxTime: number): void {
     this.listProcess = processos;
     this.MAXTIME = maxTime;
@@ -123,19 +139,7 @@ export class EscalonamentoSpnService {
           processo = this.addNew(processo, inicio);
         }
       } else {
-        const newProcesso = this.createProcess(processo);
-        if (processo.tempoEs1 !== undefined && processo.tempoEs1 == this.TIME) {
-          newProcesso.termino = (this.TIME - processo.es1) + 1;
-          this.TIME -= processo.es1 - 1;
-        }
-
-        if (processo.tempoEs2 !== undefined && processo.tempoEs1 == this.TIME) {
-          newProcesso.termino = (this.TIME - processo.es2) + 1;
-          this.TIME -= processo.es2 - 1;
-        }
-
-        this.queueNext.push(newProcesso);
-        this.queueWait.push(newProcesso);
+        this.putWait(processo);
         processo = this.nextProcess(this.TIME);
       }
       inicio = this.TIME + 1;
