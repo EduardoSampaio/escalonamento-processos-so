@@ -19,7 +19,8 @@ export class ImportCsvComponent implements OnInit {
 
   private readonly EXTENSIONS = [
     'text/csv',
-    '.csv'
+    '.csv',
+    'application/vnd.ms-excel'
   ];
 
   ngOnInit(): void { }
