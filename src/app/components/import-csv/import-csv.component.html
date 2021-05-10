@@ -1,6 +1,6 @@
 <div class="card-box-content" appDragDropUploadFile (fileDrop)="onFileDrop($event)">
   <input type="file" style="display: none" id="curva-carga" (change)="onFileChange($event)"
-    accept=".csv, application/vnd.ms-excel" />
+    accept=".csv" />
   <div class="card-box-file">
     <div class="card-box-filename" *ngIf="filename !== ''">
       <p>{{ filename }}</p>

@@ -18,7 +18,8 @@ export class ImportCsvComponent implements OnInit {
   file: File;
 
   private readonly EXTENSIONS = [
-    'application/vnd.ms-excel',
+    'text/csv',
+    '.csv'
   ];
 
   ngOnInit(): void { }
@@ -51,6 +52,7 @@ export class ImportCsvComponent implements OnInit {
     }
   }
   validateExtensions(type: string): boolean {
+    console.log(type);
     if (!this.EXTENSIONS.includes(type)) {
       return false;
     }
