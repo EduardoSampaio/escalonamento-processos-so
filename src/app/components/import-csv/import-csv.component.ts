@@ -39,7 +39,7 @@ export class ImportCsvComponent implements OnInit {
     }
   }
   openFileBrowser(): void {
-    document.getElementById('curva-carga').click();
+    document.getElementById('escalonamento').click();
   }
 
   setFilename(name: string): void {
