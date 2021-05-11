@@ -9,7 +9,6 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ProcessTableComponent } from './components/process-table/process-table.component';
 import { EscalonamentoComponent } from './pages/escalonamento/escalonamento.component';
-import { ReadyProcessComponent } from './components/ready-process/ready-process.component';
 import { TimelineComponent } from './components/timeline/timeline.component';
 
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -50,7 +49,6 @@ import { DragDropUploadFileDirective } from './components/import-csv/drag-drop-u
     TelaInicialComponent,
     ProcessTableComponent,
     EscalonamentoComponent,
-    ReadyProcessComponent,
     TimelineComponent,
     ImportCsvComponent,
     DragDropUploadFileDirective

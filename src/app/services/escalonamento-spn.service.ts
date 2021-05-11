@@ -54,7 +54,10 @@ export class EscalonamentoSpnService {
     const emEspera = this.queueWait.filter((e) => (e.esperando1 == this.TIME) || (e.esperando2 == this.TIME));
     for (const processo of emEspera) {
       this.removeEspera(processo);
-      this.listProcess.push(processo);
+      const newProcesso = this.createProcess(processo);
+      newProcesso.inicio = undefined;
+      newProcesso.termino = undefined;
+      this.listProcess.push(newProcesso);
     }
   }
 
@@ -87,7 +90,7 @@ export class EscalonamentoSpnService {
     return { ...processo };
   }
 
-  addNew(processo: Processo, inicio: number): Processo {
+  addNew(processo: Processo, inicio: number): void {
     if (processo.termino === undefined) {
       processo.termino = this.TIME;
       this.queueNext.push(processo);
@@ -98,22 +101,19 @@ export class EscalonamentoSpnService {
       newProcesso.termino = this.TIME;
       this.queueNext.push(newProcesso);
     }
-    processo = this.nextProcess(this.TIME);
-    return processo;
   }
 
   putWait(processo: Processo): void {
     const newProcesso = this.createProcess(processo);
     if (processo.tempoEs1 !== undefined && processo.tempoEs1 == this.TIME) {
-      newProcesso.termino = (this.TIME - processo.es1) + 1;
+      newProcesso.termino = this.TIME;
       this.TIME -= processo.es1 - 1;
     }
 
     if (processo.tempoEs2 !== undefined && processo.tempoEs1 == this.TIME) {
-      newProcesso.termino = (this.TIME - processo.es2) + 1;
+      newProcesso.termino = this.TIME;
       this.TIME -= processo.es2 - 1;
     }
-
     this.queueNext.push(newProcesso);
     this.queueWait.push(newProcesso);
   }
@@ -121,30 +121,37 @@ export class EscalonamentoSpnService {
   executar(processos: Processo[], maxTime: number): void {
     this.listProcess = processos;
     this.MAXTIME = maxTime;
-    let inicio = this.TIME;
+    let inicio = 0;
     let processo = this.nextProcess(this.TIME);
-    for (this.TIME; this.TIME <= this.MAXTIME + 1 && processo != null; this.TIME++) {
-      if (processo.inicio === undefined) {
-        processo.inicio = inicio;
-      }
-      if (!this.isEmptyWaitQueue()) {
-        this.nextWait(this.MAXTIME);
-      }
-      if (!this.isWaitProcess(processo)) {
-        if (processo.tempoRestante > 1) {
-          processo.tempoRestante--;
-        }
-        else {
-          processo.tempoRestante--;
-          processo = this.addNew(processo, inicio);
-        }
-      } else {
-        this.putWait(processo);
+    for (this.TIME; this.TIME <= this.MAXTIME || processo !== null; this.TIME++) {
+      inicio = this.TIME;
+      if(processo === null || processo === undefined)
+      {
         processo = this.nextProcess(this.TIME);
+      }else{
+        if (processo.inicio === undefined) {
+          processo.inicio = inicio;
+        }
+        if (!this.isEmptyWaitQueue()) {
+          this.nextWait(this.TIME);
+        }
+        if (!this.isWaitProcess(processo)) {
+          if (processo.tempoRestante > 1) {
+            processo.tempoRestante--;
+          }
+          else {
+            processo.tempoRestante--;
+            this.addNew(processo, inicio);
+            processo = this.nextProcess(this.TIME);
+          }
+        } else {
+          this.putWait(processo);
+          processo = this.nextProcess(this.TIME);
+          processo.inicio = inicio;
+        }
       }
-      inicio = this.TIME + 1;
     }
-
+    console.log(this.queueNext)
   }
 
   enqueueNext(processo: Processo): void {

@@ -53,7 +53,6 @@ export class ImportCsvComponent implements OnInit {
     }
   }
   validateExtensions(type: string): boolean {
-    console.log(type);
     if (!this.EXTENSIONS.includes(type)) {
       return false;
     }

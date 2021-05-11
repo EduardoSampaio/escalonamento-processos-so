@@ -50,7 +50,6 @@ export class EscalonamentoComponent implements OnInit {
 
   next(): void {
     let processo: Processo;
-
     if (this.politica === 'SPN') {
       processo = this.escalonamentoSpnService.dequeueNext();
     }
@@ -130,7 +129,7 @@ export class EscalonamentoComponent implements OnInit {
       this.escalonamentoSpnService.executar(this.processos, this.tempoMaximo);
     }
     if (this.politica === 'SRT') {
-      this.escalonamentoSpnService.executar(this.processos, this.tempoMaximo);
+      this.escalonamentoSrtService.executar(this.processos, this.tempoMaximo);
     }
   }
 }
