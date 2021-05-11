@@ -207,6 +207,6 @@ export class TelaInicialComponent implements OnInit {
   }
 
   download(): void {
-    saveAs('assets/template.csv', 'template.csv')
+    saveAs('assets/exemploscsv.zip', 'exemplos-csv.zip')
   }
 }
