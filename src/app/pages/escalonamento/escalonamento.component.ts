@@ -34,7 +34,9 @@ export class EscalonamentoComponent implements OnInit {
 
     this.state$.subscribe((data) => {
       this.processos = data['processos'];
-      this.nomes = this.processos.map((p) => p.nome);
+      if(this.processos !== undefined){
+        this.nomes = this.processos.map((p) => p.nome);
+      }
       this.politica = data['id'] == '1' ? 'SPN' : 'SRT';
       this.tempoMaximo = data['tempo'];
     });
