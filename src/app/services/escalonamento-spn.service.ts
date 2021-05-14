@@ -123,26 +123,26 @@ export class EscalonamentoSpnService {
     this.MAXTIME = maxTime;
     let inicio = 0;
     let processo = this.nextProcess(this.TIME);
-    for (this.TIME; this.TIME <= this.MAXTIME && processo !== null; this.TIME++) {
+    for (this.TIME; this.TIME <= this.MAXTIME; this.TIME++) {
       inicio = this.TIME;
       if(processo === null || processo === undefined)
       {
         processo = this.nextProcess(this.TIME);
       }else{
-        if (processo.inicio === undefined) {
-          processo.inicio = inicio;
-        }
         if (!this.isEmptyWaitQueue()) {
           this.nextWait(this.TIME);
         }
         if (!this.isWaitProcess(processo)) {
+          if (processo.inicio === undefined) {
+            processo.inicio = inicio;
+          }
           if (processo.tempoRestante > 1) {
             processo.tempoRestante--;
           }
           else {
             processo.tempoRestante--;
             this.addNew(processo, inicio);
-            processo = this.nextProcess(this.TIME);
+            processo = this.nextProcess(this.TIME + 1);
           }
         } else {
           this.putWait(processo);

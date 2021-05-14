@@ -123,7 +123,7 @@ export class EscalonamentoSrtService {
         prontos.push(processo);
         if (prontos.length > 0) {
             let min = prontos.sort(this.compare)[0];
-            if (min.nome !== processo.nome && processo.tempoRestante !== min.tempoRestante) {
+            if (min.nome !== processo.nome && processo.tempoRestante > min.tempoRestante) {
                 return true;
             }
         }
@@ -136,7 +136,7 @@ export class EscalonamentoSrtService {
     this.MAXTIME = maxTime;
     let inicio = 0;
     let processo = this.nextProcess(this.TIME);
-    for (this.TIME; this.TIME <= this.MAXTIME && processo !== null; this.TIME++) {
+    for (this.TIME; this.TIME <= this.MAXTIME; this.TIME++) {
       inicio = this.TIME;
       if(processo === null || processo === undefined)
       {
@@ -150,8 +150,16 @@ export class EscalonamentoSrtService {
         }
         if (!this.isWaitProcess(processo)) {
           if (this.preemptive(this.TIME, processo)) {
-            this.addNew(processo, inicio);
-            processo = this.nextProcess(this.TIME);// FIX
+            if (processo !== null && processo.tempoRestante > 0) {
+              const newProcesso = this.createProcess(processo);
+              newProcesso.inicio = undefined;
+              newProcesso.termino = undefined;
+              newProcesso.tempoRestante--;
+              console.log(processo);
+              this.listProcess.push(newProcesso);
+              this.addNew(processo, inicio);
+            }
+            processo = this.nextProcess(this.TIME);
           }
           if (processo.tempoRestante > 1) {
             processo.tempoRestante--;
@@ -167,7 +175,7 @@ export class EscalonamentoSrtService {
         }
       }
     }
-    console.log(this.queueNext)
+    console.log(this.queueNext);
   }
 
   enqueueNext(processo: Processo): void {
