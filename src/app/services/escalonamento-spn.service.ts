@@ -150,7 +150,8 @@ export class EscalonamentoSpnService {
         }
       }
     }
-    console.log(this.queueNext)
+    console.log(this.queueNext);
+    console.log(this.queueWait)
   }
 
   enqueueNext(processo: Processo): void {
