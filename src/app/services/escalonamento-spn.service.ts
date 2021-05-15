@@ -9,6 +9,7 @@ export class EscalonamentoSpnService {
   private stackPrevious: Array<Processo> = [];
   private queueWait: Array<Processo> = [];
   private listProcess: Array<Processo> = [];
+  queueReady = new Map<number, Array<string>>();
 
   private MAXTIME = 0;
   private TIME = 0;
@@ -65,6 +66,8 @@ export class EscalonamentoSpnService {
     const values = this.listProcess.filter((e) => e.chegada <= nextTime);
     if (values.length > 0) {
       const nextProcess = values.sort(this.compare)[0];
+      this.queueReady.set(this.TIME,values.map(e=>e.nome));
+      console.log(this.queueReady);
       this.removeList(nextProcess);
       return nextProcess;
     }
@@ -150,8 +153,6 @@ export class EscalonamentoSpnService {
         }
       }
     }
-    console.log(this.queueNext);
-    console.log(this.queueWait)
   }
 
   enqueueNext(processo: Processo): void {

@@ -18,6 +18,7 @@ export class EscalonamentoComponent implements OnInit {
   processos: Processo[];
   politica: string;
   nomes = [];
+  prontos = [];
 
   constructor(
     private escalonamentoSpnService: EscalonamentoSpnService,
@@ -59,6 +60,9 @@ export class EscalonamentoComponent implements OnInit {
       processo = this.escalonamentoSrtService.dequeueNext();
     }
 
+    this.prontos = this.escalonamentoSpnService.queueReady.get(processo.termino);
+    console.log(this.escalonamentoSpnService.queueReady.get(processo.termino))
+
     if (processo !== undefined) {
       for (let i = processo.inicio; i <= processo.termino; i++) {
         const id = `${processo.nome}-${i}`;
@@ -97,6 +101,8 @@ export class EscalonamentoComponent implements OnInit {
     if (this.politica === 'SRT') {
       processo = this.escalonamentoSrtService.popPrevious();
     }
+
+    this.prontos = this.escalonamentoSpnService.queueReady.get(processo.termino);
 
     if (processo !== undefined) {
       for (let i = processo.inicio; i <= processo.termino; i++) {

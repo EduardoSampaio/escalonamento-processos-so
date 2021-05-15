@@ -1,3 +1,4 @@
+import { ReadyProcessComponent } from './components/app-ready-process/app-ready-process.component';
 
 import { ImportCsvComponent } from './components/import-csv/import-csv.component';
 import { TelaInicialComponent } from './pages/tela-inicial/tela-inicial.component';
@@ -51,7 +52,8 @@ import { DragDropUploadFileDirective } from './components/import-csv/drag-drop-u
     EscalonamentoComponent,
     TimelineComponent,
     ImportCsvComponent,
-    DragDropUploadFileDirective
+    DragDropUploadFileDirective,
+    ReadyProcessComponent
   ],
   imports: [
     BrowserModule,

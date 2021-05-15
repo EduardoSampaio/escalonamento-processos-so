@@ -8,6 +8,7 @@ export class EscalonamentoSrtService {
   private stackPrevious: Array<Processo> = [];
   private queueWait: Array<Processo> = [];
   private listProcess: Array<Processo> = [];
+  private queueReady = new Map<number, Array<string>>();
 
   private MAXTIME = 0;
   private TIME = 0;
@@ -119,14 +120,14 @@ export class EscalonamentoSrtService {
 
   preemptive(nextTime: number, processo: Processo) {
     if (processo !== null) {
-        let prontos = this.listProcess.filter((e) => e.chegada <= nextTime);
-        prontos.push(processo);
-        if (prontos.length > 0) {
-            let min = prontos.sort(this.compare)[0];
-            if (min.nome !== processo.nome && processo.tempoRestante > min.tempoRestante) {
-                return true;
-            }
+      let prontos = this.listProcess.filter((e) => e.chegada <= nextTime);
+      prontos.push(processo);
+      if (prontos.length > 0) {
+        let min = prontos.sort(this.compare)[0];
+        if (min.nome !== processo.nome && processo.tempoRestante > min.tempoRestante) {
+          return true;
         }
+      }
     }
     return false;
   }
@@ -138,10 +139,9 @@ export class EscalonamentoSrtService {
     let processo = this.nextProcess(this.TIME);
     for (this.TIME; this.TIME <= this.MAXTIME; this.TIME++) {
       inicio = this.TIME;
-      if(processo === null || processo === undefined)
-      {
+      if (processo === null || processo === undefined) {
         processo = this.nextProcess(this.TIME);
-      }else{
+      } else {
         if (processo.inicio === undefined) {
           processo.inicio = inicio;
         }
@@ -150,7 +150,6 @@ export class EscalonamentoSrtService {
         }
         if (!this.isWaitProcess(processo)) {
           if (this.preemptive(this.TIME, processo)) {
-            console.log(processo);
             if (processo !== null && processo.tempoRestante > 0) {
               const newProcesso = this.createProcess(processo);
               newProcesso.inicio = undefined;
