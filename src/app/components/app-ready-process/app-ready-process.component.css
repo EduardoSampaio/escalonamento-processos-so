@@ -1,6 +1,16 @@
+.content {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+}
+
 .content-pronto{
   display: flex;
-
+  flex-flow: row nowrap;
+  width: 400px;
+  height: 100px;
+  align-items: center;
+  justify-content: center;
 }
 
 .content-pronto div{
@@ -17,4 +27,5 @@
 
 .content-pronto div:first-child{
   color: white;
+  background-color: var(--cor-sucesso);
 }

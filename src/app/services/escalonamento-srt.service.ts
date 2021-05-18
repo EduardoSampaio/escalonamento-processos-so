@@ -8,7 +8,8 @@ export class EscalonamentoSrtService {
   private stackPrevious: Array<Processo> = [];
   private queueWait: Array<Processo> = [];
   private listProcess: Array<Processo> = [];
-  private queueReady = new Map<number, Array<string>>();
+  private queueReady = Array<any>();
+  private stackReady = Array<any>();
 
   private MAXTIME = 0;
   private TIME = 0;
@@ -65,6 +66,7 @@ export class EscalonamentoSrtService {
     const values = this.listProcess.filter((e) => e.chegada <= nextTime);
     if (values.length > 0) {
       const nextProcess = values.sort(this.compare)[0];
+      this.queueReady.push(values.map(e=>e.nome));
       this.removeList(nextProcess);
       return nextProcess;
     }
@@ -175,7 +177,6 @@ export class EscalonamentoSrtService {
         }
       }
     }
-    console.log(this.queueNext);
   }
 
   enqueueNext(processo: Processo): void {
@@ -199,6 +200,26 @@ export class EscalonamentoSrtService {
       const processo = this.stackPrevious.pop();
       this.queueNext.unshift(processo);
       return processo;
+    }
+  }
+
+  dequeueReady(): any {
+    if (this.queueNext.length > 0) {
+      const ready = this.queueReady.shift();
+      this.pushStack(ready);
+      return ready;
+    }
+  }
+
+  pushStack(ready: any): void {
+    this.stackReady.push(ready);
+  }
+
+  popStack(): any {
+    if (this.stackReady.length > 0) {
+      const ready = this.stackReady.pop();
+      this.queueReady.unshift(ready);
+      return ready;
     }
   }
 }

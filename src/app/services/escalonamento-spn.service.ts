@@ -1,3 +1,4 @@
+import { map } from 'rxjs/operators';
 import { Processo } from './../models/processo.model';
 import { Injectable } from '@angular/core';
 @Injectable({
@@ -9,7 +10,7 @@ export class EscalonamentoSpnService {
   private stackPrevious: Array<Processo> = [];
   private queueWait: Array<Processo> = [];
   private listProcess: Array<Processo> = [];
-  queueReady = new Map<number, Array<string>>();
+  queueReady = new Map<number,Array<string>>();
 
   private MAXTIME = 0;
   private TIME = 0;
@@ -66,8 +67,7 @@ export class EscalonamentoSpnService {
     const values = this.listProcess.filter((e) => e.chegada <= nextTime);
     if (values.length > 0) {
       const nextProcess = values.sort(this.compare)[0];
-      this.queueReady.set(this.TIME,values.map(e=>e.nome));
-      console.log(this.queueReady);
+      this.queueReady.set(nextTime,values.map(e=>e.nome));
       this.removeList(nextProcess);
       return nextProcess;
     }
@@ -145,7 +145,7 @@ export class EscalonamentoSpnService {
           else {
             processo.tempoRestante--;
             this.addNew(processo, inicio);
-            processo = this.nextProcess(this.TIME + 1);
+            processo = this.nextProcess(this.TIME);
           }
         } else {
           this.putWait(processo);
@@ -153,6 +153,7 @@ export class EscalonamentoSpnService {
         }
       }
     }
+    console.log(this.queueReady)
   }
 
   enqueueNext(processo: Processo): void {

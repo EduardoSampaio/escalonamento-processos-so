@@ -2,7 +2,7 @@ import { Processo } from './../../models/processo.model';
 import { EscalonamentoSrtService } from './../../services/escalonamento-srt.service';
 import { EscalonamentoSpnService } from './../../services/escalonamento-spn.service';
 import { Observable } from 'rxjs';
-import { concatMapTo, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 
@@ -35,7 +35,7 @@ export class EscalonamentoComponent implements OnInit {
 
     this.state$.subscribe((data) => {
       this.processos = data['processos'];
-      if(this.processos !== undefined){
+      if (this.processos !== undefined) {
         this.nomes = this.processos.map((p) => p.nome);
       }
       this.politica = data['id'] == '1' ? 'SPN' : 'SRT';
@@ -45,6 +45,7 @@ export class EscalonamentoComponent implements OnInit {
 
   ngOnInit(): void {
     this.executarEscalonamento();
+    this.getPronto(0);
   }
 
   back(): void {
@@ -60,10 +61,9 @@ export class EscalonamentoComponent implements OnInit {
       processo = this.escalonamentoSrtService.dequeueNext();
     }
 
-    this.prontos = this.escalonamentoSpnService.queueReady.get(processo.termino);
-    console.log(this.escalonamentoSpnService.queueReady.get(processo.termino))
 
     if (processo !== undefined) {
+      this.getPronto(processo.termino);
       for (let i = processo.inicio; i <= processo.termino; i++) {
         const id = `${processo.nome}-${i}`;
         let element = document.getElementById(id);
@@ -102,9 +102,9 @@ export class EscalonamentoComponent implements OnInit {
       processo = this.escalonamentoSrtService.popPrevious();
     }
 
-    this.prontos = this.escalonamentoSpnService.queueReady.get(processo.termino);
 
     if (processo !== undefined) {
+      this.getPronto(processo.termino);
       for (let i = processo.inicio; i <= processo.termino; i++) {
         const id = `${processo.nome}-${i}`;
         let element = document.getElementById(id);
@@ -138,6 +138,15 @@ export class EscalonamentoComponent implements OnInit {
     }
     if (this.politica === 'SRT') {
       this.escalonamentoSrtService.executar(this.processos, this.tempoMaximo);
+    }
+  }
+
+  private getPronto(time: number) {
+    if (this.politica === 'SPN') {
+      this.prontos = this.escalonamentoSpnService.queueReady.get(time);
+    }
+    if (this.politica === 'SRT') {
+      //this.prontos = this.escalonamentoSrtService.nextReady();
     }
   }
 }
