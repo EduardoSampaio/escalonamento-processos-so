@@ -150,7 +150,6 @@ export class EscalonamentoSrtService {
         }
         if (!this.isWaitProcess(processo)) {
           if (this.preemptive(this.TIME, processo)) {
-            console.log(processo);
             if (processo !== null && processo.tempoRestante > 0) {
               const newProcesso = this.createProcess(processo);
               newProcesso.inicio = undefined;
@@ -168,7 +167,7 @@ export class EscalonamentoSrtService {
           else {
             processo.tempoRestante--;
             this.addNew(processo, inicio);
-            processo = this.nextProcess(this.TIME);
+            processo = this.nextProcess(this.TIME + 1);
           }
         } else {
           this.putWait(processo);
@@ -176,7 +175,6 @@ export class EscalonamentoSrtService {
         }
       }
     }
-    console.log(this.queueNext);
   }
 
   enqueueNext(processo: Processo): void {

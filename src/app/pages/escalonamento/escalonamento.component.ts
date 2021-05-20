@@ -1,3 +1,4 @@
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Processo } from './../../models/processo.model';
 import { EscalonamentoSrtService } from './../../services/escalonamento-srt.service';
 import { EscalonamentoSpnService } from './../../services/escalonamento-spn.service';
@@ -23,7 +24,8 @@ export class EscalonamentoComponent implements OnInit {
     private escalonamentoSpnService: EscalonamentoSpnService,
     private escalonamentoSrtService: EscalonamentoSrtService,
     private router: Router,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private snackbar: MatSnackBar
   ) {
     if (this.router.getCurrentNavigation().extras.state === undefined) {
       this.router.navigate(['']);
@@ -86,6 +88,8 @@ export class EscalonamentoComponent implements OnInit {
           }
         }
       }
+    }else{
+      this.showMessage("O escalonamento terminou de executar todos processos!");
     }
   }
 
@@ -133,5 +137,17 @@ export class EscalonamentoComponent implements OnInit {
     if (this.politica === 'SRT') {
       this.escalonamentoSrtService.executar(this.processos, this.tempoMaximo);
     }
+  }
+
+  private showMessage(msg: string): void {
+    this.snackbar.open(
+      msg,
+      'X',
+      {
+        duration: 5000,
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+      }
+    );
   }
 }
