@@ -63,7 +63,7 @@ export class EscalonamentoComponent implements OnInit {
 
 
     if (processo !== undefined) {
-      this.getPronto(processo.termino);
+      this.getPronto(processo.termino + 1);
       for (let i = processo.inicio; i <= processo.termino; i++) {
         const id = `${processo.nome}-${i}`;
         let element = document.getElementById(id);
@@ -80,6 +80,7 @@ export class EscalonamentoComponent implements OnInit {
             element.style.backgroundColor = 'orange';
           }
         }
+        this.getPronto(processo.termino - processo.es1);
       }
       if (processo.tempoEs2 !== undefined) {
         for (let i = processo.tempoEs2; i < processo.esperando2; i++) {
@@ -89,6 +90,7 @@ export class EscalonamentoComponent implements OnInit {
             element.style.backgroundColor = 'orange';
           }
         }
+        this.getPronto(processo.termino - processo.es2);
       }
     }
   }
@@ -104,7 +106,7 @@ export class EscalonamentoComponent implements OnInit {
 
 
     if (processo !== undefined) {
-      this.getPronto(processo.termino);
+      this.getPronto(processo.inicio);
       for (let i = processo.inicio; i <= processo.termino; i++) {
         const id = `${processo.nome}-${i}`;
         let element = document.getElementById(id);
@@ -144,6 +146,8 @@ export class EscalonamentoComponent implements OnInit {
   private getPronto(time: number) {
     if (this.politica === 'SPN') {
       this.prontos = this.escalonamentoSpnService.queueReady.get(time);
+      console.log(time)
+      console.log(this.prontos);
     }
     if (this.politica === 'SRT') {
       //this.prontos = this.escalonamentoSrtService.nextReady();

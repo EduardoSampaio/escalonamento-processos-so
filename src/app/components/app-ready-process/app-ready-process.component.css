@@ -25,7 +25,7 @@
   display: flex;
 }
 
-.content-pronto div:first-child{
+.content-pronto div{
   color: white;
   background-color: var(--cor-sucesso);
 }

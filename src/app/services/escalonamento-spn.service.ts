@@ -145,15 +145,15 @@ export class EscalonamentoSpnService {
           else {
             processo.tempoRestante--;
             this.addNew(processo, inicio);
-            processo = this.nextProcess(this.TIME);
+            processo = this.nextProcess(this.TIME + 1);
           }
         } else {
           this.putWait(processo);
-          processo = this.nextProcess(this.TIME);
+          processo = this.nextProcess(this.TIME + 1);
         }
       }
     }
-    console.log(this.queueReady)
+    console.log(this.queueReady);
   }
 
   enqueueNext(processo: Processo): void {
