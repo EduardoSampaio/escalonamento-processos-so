@@ -8,6 +8,7 @@ export class EscalonamentoSrtService {
   private stackPrevious: Array<Processo> = [];
   private queueWait: Array<Processo> = [];
   private listProcess: Array<Processo> = [];
+  queueReady = Array<any>();
 
   private MAXTIME = 0;
   private TIME = 0;
@@ -64,6 +65,7 @@ export class EscalonamentoSrtService {
     const values = this.listProcess.filter((e) => e.chegada <= nextTime);
     if (values.length > 0) {
       const nextProcess = values.sort(this.compare)[0];
+      this.queueReady.push(values.map(e=>e.nome));
       this.removeList(nextProcess);
       return nextProcess;
     }
@@ -137,7 +139,6 @@ export class EscalonamentoSrtService {
     this.listProcess = processos;
     this.MAXTIME = maxTime;
     let inicio = 0;
-    let countUt = 0;
     let processo = this.nextProcess(this.TIME);
     for (this.TIME; this.TIME <= this.MAXTIME; this.TIME++) {
       inicio = this.TIME;
@@ -146,7 +147,6 @@ export class EscalonamentoSrtService {
           this.nextWait();
         }
         processo = this.nextProcess(this.TIME);
-        countUt = 0;
       }
       else {
         if (processo.inicio === undefined) {

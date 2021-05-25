@@ -1,3 +1,4 @@
+import { map } from 'rxjs/operators';
 import { Processo } from './../models/processo.model';
 import { Injectable } from '@angular/core';
 @Injectable({
@@ -9,17 +10,11 @@ export class EscalonamentoSpnService {
   private stackPrevious: Array<Processo> = [];
   private queueWait: Array<Processo> = [];
   private listProcess: Array<Processo> = [];
+  queueReady = Array<any>();
+  stackReady = Array<any>();
 
   private MAXTIME = 0;
   private TIME = 0;
-
-  get next(): Array<Processo> {
-    return this.queueNext;
-  }
-
-  get previous(): Array<Processo> {
-    return this.stackPrevious;
-  }
 
   constructor() { }
 
@@ -65,6 +60,7 @@ export class EscalonamentoSpnService {
     const values = this.listProcess.filter((e) => e.chegada <= nextTime);
     if (values.length > 0) {
       const nextProcess = values.sort(this.compare)[0];
+      this.queueReady.push(values.map(e => e.nome));
       this.removeList(nextProcess);
       return nextProcess;
     }
@@ -72,18 +68,18 @@ export class EscalonamentoSpnService {
   }
 
   isWaitProcess(processo: Processo): boolean {
-    if (processo.tempoEs1 !== undefined &&  processo.countUt !== undefined && processo.tempoEs1 == processo.countUt && processo.esperando1 === undefined) {
-        processo.inicioEspera1 = this.TIME;
-        processo.esperando1 = Number(this.TIME) + Number(processo.es1) - 1;
-        processo.countUt = 0;
-        return true;
+    if (processo.tempoEs1 !== undefined && processo.countUt !== undefined && processo.tempoEs1 == processo.countUt && processo.esperando1 === undefined) {
+      processo.inicioEspera1 = this.TIME;
+      processo.esperando1 = Number(this.TIME) + Number(processo.es1) - 1;
+      processo.countUt = 0;
+      return true;
     }
-    if (processo.tempoEs2 !== undefined &&  processo.countUt !== undefined && processo.tempoEs2 == processo?.countUt && processo.esperando1 !== undefined
+    if (processo.tempoEs2 !== undefined && processo.countUt !== undefined && processo.tempoEs2 == processo?.countUt && processo.esperando1 !== undefined
       && processo.esperando2 === undefined) {
-        processo.inicioEspera2 = this.TIME;
-        processo.esperando2 = Number(this.TIME) + Number(processo.es2) - 1;
-        processo.countUt = 0;
-        return true;
+      processo.inicioEspera2 = this.TIME;
+      processo.esperando2 = Number(this.TIME) + Number(processo.es2) - 1;
+      processo.countUt = 0;
+      return true;
     }
     return false;
   }
@@ -120,8 +116,7 @@ export class EscalonamentoSpnService {
     let processo = this.nextProcess(this.TIME);
     for (this.TIME; this.TIME <= this.MAXTIME; this.TIME++) {
       inicio = this.TIME;
-      if(processo === null || processo === undefined)
-      {
+      if (processo === null || processo === undefined) {
         if (this.queueWait.length > 0) {
           this.nextWait();
         }
@@ -150,6 +145,7 @@ export class EscalonamentoSpnService {
         }
       }
     }
+    console.log(this.queueReady);
   }
 
   enqueueNext(processo: Processo): void {

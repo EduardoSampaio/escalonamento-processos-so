@@ -3,7 +3,7 @@ import { Processo } from './../../models/processo.model';
 import { EscalonamentoSrtService } from './../../services/escalonamento-srt.service';
 import { EscalonamentoSpnService } from './../../services/escalonamento-spn.service';
 import { Observable } from 'rxjs';
-import { concatMapTo, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 
@@ -19,6 +19,8 @@ export class EscalonamentoComponent implements OnInit {
   processos: Processo[];
   politica: string;
   nomes = [];
+  prontos = [];
+  count = 0;
 
   constructor(
     private escalonamentoSpnService: EscalonamentoSpnService,
@@ -36,7 +38,7 @@ export class EscalonamentoComponent implements OnInit {
 
     this.state$.subscribe((data) => {
       this.processos = data['processos'];
-      if(this.processos !== undefined){
+      if (this.processos !== undefined) {
         this.nomes = this.processos.map((p) => p.nome);
       }
       this.politica = data['id'] == '1' ? 'SPN' : 'SRT';
@@ -46,6 +48,7 @@ export class EscalonamentoComponent implements OnInit {
 
   ngOnInit(): void {
     this.executarEscalonamento();
+    this.getPronto(this.count);
   }
 
   back(): void {
@@ -62,14 +65,15 @@ export class EscalonamentoComponent implements OnInit {
     }
 
     if (processo !== undefined) {
-      this.fillTimeLine(processo, processo.inicio, processo.termino,  'black')
+      this.fillTimeLine(processo, processo.inicio, processo.termino,  'black');
+      this.getPronto(++this.count);
       if(processo.tempoEs1)
       {
-        this.fillTimeLine(processo, processo.inicioEspera1, processo.esperando1,  'orange')
+        this.fillTimeLine(processo, processo.inicioEspera1, processo.esperando1,  'orange');
       }
       if(processo.tempoEs2)
       {
-        this.fillTimeLine(processo, processo.inicioEspera2, processo.esperando2,  'orange')
+        this.fillTimeLine(processo, processo.inicioEspera2, processo.esperando2,  'orange');
       }
     }else{
       this.showMessage("O escalonamento terminou de executar todos processos!");
@@ -85,8 +89,10 @@ export class EscalonamentoComponent implements OnInit {
       processo = this.escalonamentoSrtService.popPrevious();
     }
 
+
     if (processo !== undefined) {
       this.fillTimeLine(processo, processo.inicio, processo.termino,  'white');
+      this.getPronto(--this.count);
       if(processo.tempoEs1)
       {
         this.fillTimeLine(processo, processo.inicioEspera1, processo.esperando1,  'white')
@@ -95,6 +101,8 @@ export class EscalonamentoComponent implements OnInit {
       {
         this.fillTimeLine(processo, processo.inicioEspera2, processo.esperando2,  'white')
       }
+    }else{
+      this.prontos = this.escalonamentoSpnService.queueReady[0];
     }
   }
 
@@ -128,5 +136,13 @@ export class EscalonamentoComponent implements OnInit {
         verticalPosition: 'top',
       }
     );
+  }
+  private getPronto(count: number) {
+    if (this.politica === 'SPN') {
+      this.prontos = this.escalonamentoSpnService.queueReady[count]
+    }
+    if (this.politica === 'SRT') {
+      this.prontos = this.escalonamentoSrtService.queueReady[count]
+    }
   }
 }

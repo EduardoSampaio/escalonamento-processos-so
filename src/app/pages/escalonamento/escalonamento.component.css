@@ -4,8 +4,8 @@
   margin: auto;
   background-color: var(--cor-light);
   display: grid;
-  grid-template-areas: "titulo titulo""tabela tabela""escalonamento escalonamento""timeline timeline";
-  grid-template-columns:  1fr;
+  grid-template-areas: "titulo titulo""tabela pronto""escalonamento escalonamento""timeline timeline";
+  grid-template-columns:  1fr 1fr;
   grid-template-rows: 100px 200px 100px auto;
 }
 
@@ -19,7 +19,7 @@
 .tabela {
   grid-area: tabela;
   width: 600px;
-  margin: auto;
+
 }
 
 .pronto {

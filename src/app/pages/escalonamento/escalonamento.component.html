@@ -13,12 +13,11 @@
   <div class="tabela" *ngIf="state$ | async">
     <app-process-table [data]="processos"></app-process-table>
   </div>
-  <!-- <div class="pronto">
-    <app-ready-process></app-ready-process>
-  </div> -->
+  <div class="pronto">
+    <app-ready-process [prontos]="prontos"></app-ready-process>
+  </div>
   <div class="escalonamento">
     <h2>Política de Escalonamento ({{ politica }})</h2>
-    <!-- <p>Tempo Atual ({{ tempoAtual }})</p> -->
   </div>
   <div class="timeline" *ngIf="state$ | async">
     <app-timeline [nomes]="nomes" (onNext)="next()" [tempoMaximo]="tempoMaximo" (onPrevious)="previous()" (onStart)="start()" (onReset)="reset()">
