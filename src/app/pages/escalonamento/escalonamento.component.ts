@@ -62,31 +62,14 @@ export class EscalonamentoComponent implements OnInit {
     }
 
     if (processo !== undefined) {
-      for (let i = processo.inicio; i <= processo.termino; i++) {
-        const id = `${processo.nome}-${i}`;
-        let element = document.getElementById(id);
-        if (element !== null) {
-          element.style.backgroundColor = 'black';
-        }
+      this.fillTimeLine(processo, processo.inicio, processo.termino,  'black')
+      if(processo.tempoEs1)
+      {
+        this.fillTimeLine(processo, processo.inicioEspera1, processo.esperando1,  'orange')
       }
-
-      if (processo.tempoEs1 !== undefined) {
-        for (let i = processo.tempoEs1; i < processo.esperando1; i++) {
-          const id = `${processo.nome}-${i}`;
-          let element = document.getElementById(id);
-          if (element !== null) {
-            element.style.backgroundColor = 'orange';
-          }
-        }
-      }
-      if (processo.tempoEs2 !== undefined) {
-        for (let i = processo.tempoEs2; i < processo.esperando2; i++) {
-          const id = `${processo.nome}-${i}`;
-          let element = document.getElementById(id);
-          if (element !== null) {
-            element.style.backgroundColor = 'orange';
-          }
-        }
+      if(processo.tempoEs2)
+      {
+        this.fillTimeLine(processo, processo.inicioEspera2, processo.esperando2,  'orange')
       }
     }else{
       this.showMessage("O escalonamento terminou de executar todos processos!");
@@ -103,29 +86,25 @@ export class EscalonamentoComponent implements OnInit {
     }
 
     if (processo !== undefined) {
-      for (let i = processo.inicio; i <= processo.termino; i++) {
-        const id = `${processo.nome}-${i}`;
-        let element = document.getElementById(id);
-        element.style.backgroundColor = 'white';
+      this.fillTimeLine(processo, processo.inicio, processo.termino,  'white');
+      if(processo.tempoEs1)
+      {
+        this.fillTimeLine(processo, processo.inicioEspera1, processo.esperando1,  'white')
       }
+      if(processo.tempoEs2)
+      {
+        this.fillTimeLine(processo, processo.inicioEspera2, processo.esperando2,  'white')
+      }
+    }
+  }
 
-      if (processo.tempoEs1 !== undefined) {
-        for (let i = processo.tempoEs1; i < processo.esperando1; i++) {
-          const id = `${processo.nome}-${i}`;
-          let element = document.getElementById(id);
-          if (element !== null) {
-            element.style.backgroundColor = 'white';
-          }
-        }
-      }
-      if (processo.tempoEs2 !== undefined) {
-        for (let i = processo.tempoEs2; i < processo.esperando2; i++) {
-          const id = `${processo.nome}-${i}`;
-          let element = document.getElementById(id);
-          if (element !== null) {
-            element.style.backgroundColor = 'white';
-          }
-        }
+  private fillTimeLine(processo: Processo, inicio: number, termino: number, status: 'white' | 'black' | 'orange'): void {
+
+    for (let i = inicio; i <= termino; i++) {
+      const id = `${processo.nome}-${i}`;
+      let element = document.getElementById(id);
+      if (element !== null) {
+        element.style.backgroundColor = status;
       }
     }
   }

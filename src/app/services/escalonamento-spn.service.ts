@@ -50,7 +50,7 @@ export class EscalonamentoSpnService {
     return 0;
   }
 
-  nextWait(time: number): void {
+  nextWait(): void {
     const emEspera = this.queueWait.filter((e) => (e.esperando1 == this.TIME) || (e.esperando2 == this.TIME));
     for (const processo of emEspera) {
       this.removeEspera(processo);
@@ -72,18 +72,20 @@ export class EscalonamentoSpnService {
   }
 
   isWaitProcess(processo: Processo): boolean {
-    if ((processo.tempoEs1 !== undefined && processo.tempoEs1 == this.TIME)
-      || (processo.tempoEs2 !== undefined && processo.tempoEs2 == this.TIME)) {
-      return true;
+    if (processo.tempoEs1 !== undefined &&  processo.countUt !== undefined && processo.tempoEs1 == processo.countUt && processo.esperando1 === undefined) {
+        processo.inicioEspera1 = this.TIME;
+        processo.esperando1 = Number(this.TIME) + Number(processo.es1) - 1;
+        processo.countUt = 0;
+        return true;
+    }
+    if (processo.tempoEs2 !== undefined &&  processo.countUt !== undefined && processo.tempoEs2 == processo?.countUt && processo.esperando1 !== undefined
+      && processo.esperando2 === undefined) {
+        processo.inicioEspera2 = this.TIME;
+        processo.esperando2 = Number(this.TIME) + Number(processo.es2) - 1;
+        processo.countUt = 0;
+        return true;
     }
     return false;
-  }
-
-  isEmptyWaitQueue(): boolean {
-    if (this.queueWait.length > 0) {
-      return false;
-    }
-    return true;
   }
 
   createProcess(processo: Processo): Processo {
@@ -105,15 +107,8 @@ export class EscalonamentoSpnService {
 
   putWait(processo: Processo): void {
     const newProcesso = this.createProcess(processo);
-    if (processo.tempoEs1 !== undefined && processo.tempoEs1 == this.TIME) {
-      newProcesso.termino = this.TIME;
-      this.TIME--;
-    }
-
-    if (processo.tempoEs2 !== undefined && processo.tempoEs1 == this.TIME) {
-      newProcesso.termino = this.TIME;
-      this.TIME--;
-    }
+    newProcesso.termino = this.TIME;
+    this.TIME--;
     this.queueNext.push(newProcesso);
     this.queueWait.push(newProcesso);
   }
@@ -127,10 +122,14 @@ export class EscalonamentoSpnService {
       inicio = this.TIME;
       if(processo === null || processo === undefined)
       {
+        if (this.queueWait.length > 0) {
+          this.nextWait();
+        }
         processo = this.nextProcess(this.TIME);
-      }else{
-        if (!this.isEmptyWaitQueue()) {
-          this.nextWait(this.TIME);
+      }
+      else {
+        if (this.queueWait.length > 0) {
+          this.nextWait();
         }
         if (!this.isWaitProcess(processo)) {
           if (processo.inicio === undefined) {
@@ -138,6 +137,7 @@ export class EscalonamentoSpnService {
           }
           if (processo.tempoRestante > 1) {
             processo.tempoRestante--;
+            processo.countUt++;
           }
           else {
             processo.tempoRestante--;
@@ -150,8 +150,6 @@ export class EscalonamentoSpnService {
         }
       }
     }
-    console.log(this.queueNext);
-    console.log(this.queueWait)
   }
 
   enqueueNext(processo: Processo): void {

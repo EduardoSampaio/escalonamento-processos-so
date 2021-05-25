@@ -94,23 +94,21 @@ export class TelaInicialComponent implements OnInit {
       {
         newObj.tempoEs1 = obj[3];
         newObj.es1 = obj[4];
-        newObj.esperando1 = Number(newObj.tempoEs1) + Number(newObj.es1);
       }
 
       if(obj[5] !== undefined &&  obj[6] !== undefined)
       {
         newObj.tempoEs2 = obj[5];
         newObj.es2 = obj[6];
-        newObj.esperando2 = Number(newObj.tempoEs2) + Number(newObj.es2);
       }
-      // tslint:disable-next-line: radix
-      this.tempoMaximo += parseInt(obj[2]);
+
       this.validValues(newObj);
       lista.push(newObj);
     }
     this.csvRecords = lista;
     this.validNomes();
     this.requiredValues();
+    this.calcularTempoMaximo();
   }
 
   private validNomes(){
@@ -178,12 +176,12 @@ export class TelaInicialComponent implements OnInit {
     let soma = 0;
 
     for (const value of this.csvRecords) {
-      if (value.tempoEs1 !== undefined) {
-        soma += parseInt(value.tempoEs1.toString());
+      if (value.es1 !== undefined) {
+        soma += parseInt(value.es1.toString());
       }
 
-      if (value.tempoEs2 !== undefined) {
-        soma += parseInt(value.tempoEs2.toString());
+      if (value.es2 !== undefined) {
+        soma += parseInt(value.es2.toString());
       }
 
       if (value.tempoExecucao !== undefined) {

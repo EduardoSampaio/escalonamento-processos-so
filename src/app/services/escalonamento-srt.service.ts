@@ -49,7 +49,7 @@ export class EscalonamentoSrtService {
     return 0;
   }
 
-  nextWait(time: number): void {
+  nextWait(): void {
     const emEspera = this.queueWait.filter((e) => (e.esperando1 == this.TIME) || (e.esperando2 == this.TIME));
     for (const processo of emEspera) {
       this.removeEspera(processo);
@@ -71,9 +71,18 @@ export class EscalonamentoSrtService {
   }
 
   isWaitProcess(processo: Processo): boolean {
-    if ((processo.tempoEs1 !== undefined && processo.tempoEs1 == this.TIME)
-      || (processo.tempoEs2 !== undefined && processo.tempoEs2 == this.TIME)) {
-      return true;
+    if (processo.tempoEs1 !== undefined &&  processo.countUt !== undefined && processo.tempoEs1 == processo.countUt && processo.esperando1 === undefined) {
+        processo.inicioEspera1 = this.TIME;
+        processo.esperando1 = Number(this.TIME) + Number(processo.es1) - 1;
+        processo.countUt = 0;
+        return true;
+    }
+    if (processo.tempoEs2 !== undefined &&  processo.countUt !== undefined && processo.tempoEs2 == processo?.countUt && processo.esperando1 !== undefined
+      && processo.esperando2 === undefined) {
+        processo.inicioEspera2 = this.TIME;
+        processo.esperando2 = Number(this.TIME) + Number(processo.es2) - 1;
+        processo.countUt = 0;
+        return true;
     }
     return false;
   }
@@ -104,29 +113,22 @@ export class EscalonamentoSrtService {
 
   putWait(processo: Processo): void {
     const newProcesso = this.createProcess(processo);
-    if (processo.tempoEs1 !== undefined && processo.tempoEs1 == this.TIME) {
-      newProcesso.termino = this.TIME;
-      this.TIME--;
-    }
-
-    if (processo.tempoEs2 !== undefined && processo.tempoEs1 == this.TIME) {
-      newProcesso.termino = this.TIME;
-      this.TIME--;
-    }
+    newProcesso.termino = this.TIME;
+    this.TIME--;
     this.queueNext.push(newProcesso);
     this.queueWait.push(newProcesso);
   }
 
   preemptive(nextTime: number, processo: Processo) {
     if (processo !== null) {
-        let prontos = this.listProcess.filter((e) => e.chegada <= nextTime);
-        prontos.push(processo);
-        if (prontos.length > 0) {
-            let min = prontos.sort(this.compare)[0];
-            if (min.nome !== processo.nome && processo.tempoRestante > min.tempoRestante) {
-                return true;
-            }
+      let prontos = this.listProcess.filter((e) => e.chegada <= nextTime);
+      prontos.push(processo);
+      if (prontos.length > 0) {
+        let min = prontos.sort(this.compare)[0];
+        if (min.nome !== processo.nome && processo.tempoRestante > min.tempoRestante) {
+          return true;
         }
+      }
     }
     return false;
   }
@@ -135,18 +137,23 @@ export class EscalonamentoSrtService {
     this.listProcess = processos;
     this.MAXTIME = maxTime;
     let inicio = 0;
+    let countUt = 0;
     let processo = this.nextProcess(this.TIME);
     for (this.TIME; this.TIME <= this.MAXTIME; this.TIME++) {
       inicio = this.TIME;
-      if(processo === null || processo === undefined)
-      {
+      if (processo === null || processo === undefined) {
+        if (this.queueWait.length > 0) {
+          this.nextWait();
+        }
         processo = this.nextProcess(this.TIME);
-      }else{
+        countUt = 0;
+      }
+      else {
         if (processo.inicio === undefined) {
           processo.inicio = inicio;
         }
         if (!this.isEmptyWaitQueue()) {
-          this.nextWait(this.TIME);
+          this.nextWait();
         }
         if (!this.isWaitProcess(processo)) {
           if (this.preemptive(this.TIME, processo)) {
@@ -163,6 +170,7 @@ export class EscalonamentoSrtService {
           }
           if (processo.tempoRestante > 1) {
             processo.tempoRestante--;
+            processo.countUt++;
           }
           else {
             processo.tempoRestante--;
@@ -174,7 +182,10 @@ export class EscalonamentoSrtService {
           processo = this.nextProcess(this.TIME);
         }
       }
+
     }
+    console.log(this.queueNext);
+    console.log(this.queueWait);
   }
 
   enqueueNext(processo: Processo): void {
