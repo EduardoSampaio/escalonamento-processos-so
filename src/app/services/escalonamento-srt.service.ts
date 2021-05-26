@@ -162,6 +162,7 @@ export class EscalonamentoSrtService {
               newProcesso.inicio = undefined;
               newProcesso.termino = undefined;
               newProcesso.tempoRestante--;
+              newProcesso.countUt++;
               this.listProcess.push(newProcesso);
               this.addNew(processo, inicio);
             }

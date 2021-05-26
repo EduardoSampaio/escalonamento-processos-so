@@ -20,7 +20,7 @@
     <h2>Política de Escalonamento ({{ politica }})</h2>
   </div>
   <div class="timeline" *ngIf="state$ | async">
-    <app-timeline [nomes]="nomes" (onNext)="next()" [tempoMaximo]="tempoMaximo" (onPrevious)="previous()" (onStart)="start()" (onReset)="reset()">
+    <app-timeline [nomes]="nomes" (onNext)="next()" [tempoMaximo]="tempoMaximo" (onPrevious)="previous()">
     </app-timeline>
   </div>
 </div>
