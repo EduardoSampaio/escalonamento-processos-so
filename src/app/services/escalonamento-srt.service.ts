@@ -188,6 +188,7 @@ export class EscalonamentoSrtService {
 
     }
     console.log(this.waitlist);
+    console.log(this.queueNext);
   }
 
   enqueueNext(processo: Processo): void {

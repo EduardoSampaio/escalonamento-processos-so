@@ -146,6 +146,7 @@ export class EscalonamentoSpnService {
         }
       }
     }
+    console.log(this.queueNext);
     console.log(this.queueReady);
     console.log(this.waitlist);
   }
