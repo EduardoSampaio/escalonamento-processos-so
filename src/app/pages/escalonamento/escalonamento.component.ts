@@ -66,19 +66,17 @@ export class EscalonamentoComponent implements OnInit {
     }
 
     if (processo !== undefined) {
-      this.fillTimeLine(processo, processo.inicio, processo.termino,  'black');
+      this.fillTimeLine(processo, processo.inicio, processo.termino, 'black');
       this.getPronto(++this.count);
       this.getEmEspera(processo.termino)
 
-      if(processo.tempoEs1)
-      {
-        this.fillTimeLine(processo, processo.inicioEspera1, processo.esperando1,  'orange');
+      if (processo.tempoEs1) {
+        this.fillTimeLine(processo, processo.inicioEspera1, processo.esperando1, 'orange');
       }
-      if(processo.tempoEs2)
-      {
-        this.fillTimeLine(processo, processo.inicioEspera2, processo.esperando2,  'orange');
+      if (processo.tempoEs2) {
+        this.fillTimeLine(processo, processo.inicioEspera2, processo.esperando2, 'orange');
       }
-    }else{
+    } else {
       this.showMessage("O escalonamento terminou de executar todos processos!");
     }
   }
@@ -94,18 +92,16 @@ export class EscalonamentoComponent implements OnInit {
 
 
     if (processo !== undefined) {
-      this.fillTimeLine(processo, processo.inicio, processo.termino,  'white');
+      this.fillTimeLine(processo, processo.inicio, processo.termino, 'white');
       this.getPronto(--this.count);
       this.getEmEspera(processo.inicio)
-      if(processo.tempoEs1)
-      {
-        this.fillTimeLine(processo, processo.inicioEspera1, processo.esperando1,  'white')
+      if (processo.tempoEs1 && processo.esperando1 > processo.inicio) {
+        this.fillTimeLine(processo, processo.inicioEspera1, processo.esperando1, 'white')
       }
-      if(processo.tempoEs2)
-      {
-        this.fillTimeLine(processo, processo.inicioEspera2, processo.esperando2,  'white')
+      if (processo.tempoEs2 && processo.esperando2 > processo.inicio) {
+        this.fillTimeLine(processo, processo.inicioEspera2, processo.esperando2, 'white')
       }
-    }else{
+    } else {
       this.prontos = this.escalonamentoSpnService.queueReady[0];
       this.esperas = [];
     }
@@ -153,23 +149,18 @@ export class EscalonamentoComponent implements OnInit {
 
   private getEmEspera(time: number) {
     console.log(time)
-    if(time !== 0)
-    {
-      if (this.politica === 'SPN') {
-        this.esperas = this.escalonamentoSpnService.waitlist
-        .filter(e=> (e.inicioEspera1 <= time && e.esperando1 >= time) || (e.inicioEspera2 <= time && e.esperando2 >= time)).map(e=>e.nome);
+    if (this.politica === 'SPN') {
+      this.esperas = this.escalonamentoSpnService.waitlist
+        .filter(e => (e.inicioEspera1 <= time && e.esperando1 >= time) || (e.inicioEspera2 <= time && e.esperando2 >= time)).map(e => e.nome);
 
-        this.esperas = [...new Set(this.esperas)]
-      }
-      if (this.politica === 'SRT') {
-        this.esperas = this.escalonamentoSrtService.waitlist
-        .filter(e=> (e.inicioEspera1 <= time && e.esperando1 >= time) || (e.inicioEspera2 <= time && e.esperando2 >= time)).map(e=>e.nome);
-
-        this.esperas = [...new Set(this.esperas)]
-      }
-    }else{
-      this.esperas = [];
+      this.esperas = [...new Set(this.esperas)]
     }
+    if (this.politica === 'SRT') {
+      this.esperas = this.escalonamentoSrtService.waitlist
+        .filter(e => (e.inicioEspera1 <= time && e.esperando1 >= time) || (e.inicioEspera2 <= time && e.esperando2 >= time)).map(e => e.nome);
 
+      this.esperas = [...new Set(this.esperas)]
+    }
   }
 }
+
