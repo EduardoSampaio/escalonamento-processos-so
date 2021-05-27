@@ -11,7 +11,7 @@ export class EscalonamentoSpnService {
   private queueWait: Array<Processo> = [];
   private listProcess: Array<Processo> = [];
   queueReady = Array<any>();
-  stackReady = Array<any>();
+  waitlist = Array<Processo>();
 
   private MAXTIME = 0;
   private TIME = 0;
@@ -104,6 +104,7 @@ export class EscalonamentoSpnService {
   putWait(processo: Processo): void {
     const newProcesso = this.createProcess(processo);
     newProcesso.termino = this.TIME;
+    this.waitlist.push(newProcesso);
     this.TIME--;
     this.queueNext.push(newProcesso);
     this.queueWait.push(newProcesso);
@@ -146,6 +147,7 @@ export class EscalonamentoSpnService {
       }
     }
     console.log(this.queueReady);
+    console.log(this.waitlist);
   }
 
   enqueueNext(processo: Processo): void {

@@ -8,6 +8,7 @@ import { Component, OnInit, Input } from '@angular/core';
 export class ReadyProcessComponent implements OnInit {
 
   @Input() prontos: any;
+  @Input() esperas: any;
   constructor() { }
 
   ngOnInit() {

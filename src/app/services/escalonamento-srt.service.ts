@@ -9,6 +9,7 @@ export class EscalonamentoSrtService {
   private queueWait: Array<Processo> = [];
   private listProcess: Array<Processo> = [];
   queueReady = Array<any>();
+  waitlist = Array<Processo>();
 
   private MAXTIME = 0;
   private TIME = 0;
@@ -55,6 +56,7 @@ export class EscalonamentoSrtService {
     for (const processo of emEspera) {
       this.removeEspera(processo);
       const newProcesso = this.createProcess(processo);
+      this.waitlist.push(newProcesso);
       newProcesso.inicio = undefined;
       newProcesso.termino = undefined;
       this.listProcess.push(newProcesso);
@@ -185,8 +187,7 @@ export class EscalonamentoSrtService {
       }
 
     }
-    console.log(this.queueNext);
-    console.log(this.queueWait);
+    console.log(this.waitlist);
   }
 
   enqueueNext(processo: Processo): void {

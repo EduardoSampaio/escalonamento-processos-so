@@ -29,3 +29,31 @@
   color: white;
   background-color: var(--cor-sucesso);
 }
+
+.content-espera{
+  display: flex;
+  flex-flow: row nowrap;
+  width: 400px;
+  height: 100px;
+  align-items: center;
+  justify-content: center;
+}
+
+.content-espera div{
+  width: 40px;
+  height: 40px;
+  border: 2px solid black;
+  align-items: center;
+  justify-content: center;
+  margin-left: 5px;
+  color: white;
+  background-color: var(--cor-alerta);
+  display: flex;
+}
+
+
+.content-espera div{
+  color: white;
+  background-color: var(--cor-alerta);
+}
+

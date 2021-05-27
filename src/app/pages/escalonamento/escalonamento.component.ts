@@ -20,6 +20,7 @@ export class EscalonamentoComponent implements OnInit {
   politica: string;
   nomes = [];
   prontos = [];
+  esperas = [];
   count = 0;
 
   constructor(
@@ -67,6 +68,8 @@ export class EscalonamentoComponent implements OnInit {
     if (processo !== undefined) {
       this.fillTimeLine(processo, processo.inicio, processo.termino,  'black');
       this.getPronto(++this.count);
+      this.getEmEspera(processo.termino)
+
       if(processo.tempoEs1)
       {
         this.fillTimeLine(processo, processo.inicioEspera1, processo.esperando1,  'orange');
@@ -93,6 +96,7 @@ export class EscalonamentoComponent implements OnInit {
     if (processo !== undefined) {
       this.fillTimeLine(processo, processo.inicio, processo.termino,  'white');
       this.getPronto(--this.count);
+      this.getEmEspera(processo.inicio)
       if(processo.tempoEs1)
       {
         this.fillTimeLine(processo, processo.inicioEspera1, processo.esperando1,  'white')
@@ -103,6 +107,7 @@ export class EscalonamentoComponent implements OnInit {
       }
     }else{
       this.prontos = this.escalonamentoSpnService.queueReady[0];
+      this.esperas = [];
     }
   }
 
@@ -144,5 +149,27 @@ export class EscalonamentoComponent implements OnInit {
     if (this.politica === 'SRT') {
       this.prontos = this.escalonamentoSrtService.queueReady[count]
     }
+  }
+
+  private getEmEspera(time: number) {
+    console.log(time)
+    if(time !== 0)
+    {
+      if (this.politica === 'SPN') {
+        this.esperas = this.escalonamentoSpnService.waitlist
+        .filter(e=> (e.inicioEspera1 <= time && e.esperando1 >= time) || (e.inicioEspera2 <= time && e.esperando2 >= time)).map(e=>e.nome);
+
+        this.esperas = [...new Set(this.esperas)]
+      }
+      if (this.politica === 'SRT') {
+        this.esperas = this.escalonamentoSrtService.waitlist
+        .filter(e=> (e.inicioEspera1 <= time && e.esperando1 >= time) || (e.inicioEspera2 <= time && e.esperando2 >= time)).map(e=>e.nome);
+
+        this.esperas = [...new Set(this.esperas)]
+      }
+    }else{
+      this.esperas = [];
+    }
+
   }
 }
